@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".CalendarActivity">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/blue"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_calendar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Calendário"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:text="2026"
+        android:textColor="@color/white"
+        android:textSize="110sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header" />
+
+    <TextView
+        android:id="@+id/textMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="0dp"
+        android:text="Março"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textYear" />
+
+    <View
+        android:id="@+id/monthDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/gray_text"
+        app:layout_constraintTop_toBottomOf="@id/textMonth" />
+
+    <!-- Day of Week Labels -->
+    <LinearLayout
+        android:id="@+id/dayLabels"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/monthDivider">
+        <TextView style="@style/CalendarDate" android:text="D" android:textColor="@color/blue" android:textSize="12sp" android:layout_weight="1" android:layout_width="0dp" />
+        <TextView style="@style/CalendarDate" android:text="S" android:textSize="12sp" android:layout_weight="1" android:layout_width="0dp" />
+        <TextView style="@style/CalendarDate" android:text="T" android:textSize="12sp" android:layout_weight="1" android:layout_width="0dp" />
+        <TextView style="@style/CalendarDate" android:text="Q" android:textSize="12sp" android:layout_weight="1" android:layout_width="0dp" />
+        <TextView style="@style/CalendarDate" android:text="Q" android:textSize="12sp" android:layout_weight="1" android:layout_width="0dp" />
+        <TextView style="@style/CalendarDate" android:text="S" android:textSize="12sp" android:layout_weight="1" android:layout_width="0dp" />
+        <TextView style="@style/CalendarDate" android:text="S" android:textColor="@color/blue" android:textSize="12sp" android:layout_weight="1" android:layout_width="0dp" />
+    </LinearLayout>
+
+    <!-- Dynamic Calendar Pager -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/calendarPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/dayLabels" />
+
+    <!-- Centered Events Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintTop_toBottomOf="@id/calendarPager">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event_semana_livro_label"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event_semana_livro_name"
+                android:textColor="@color/blue"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="12dp"
+            android:background="@color/gray_text" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event_entrega_livro_label"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event_entrega_livro_name"
+                android:textColor="@color/blue"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnVoltar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/blue"
+            android:text="@string/btn_voltar"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:cornerRadius="12dp" />
+    </LinearLayout>
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="#121212"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/nav_perfil_calendar"
+            style="@style/BottomNavItem">
+
+            <ImageView
+                style="@style/BottomNavIcon"
+                android:src="@drawable/ic_perfil"
+                android:tint="#A9A9A9" />
+            <TextView style="@style/BottomNavLabel" android:text="Perfil" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nav_reviews_calendar"
+            style="@style/BottomNavItem">
+
+            <ImageView
+                style="@style/BottomNavIcon"
+                android:src="@drawable/ic_reviews"
+                android:tint="#A8A8A8" />
+            <TextView style="@style/BottomNavLabel" android:text="Reviews" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nav_home_calendar"
+            style="@style/BottomNavItem">
+
+            <ImageView
+                style="@style/BottomNavIcon"
+                android:src="@drawable/ic_home"
+                android:tint="#A8A6A6" />
+            <TextView style="@style/BottomNavLabel" android:text="Home" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nav_unishop_calendar"
+            style="@style/BottomNavItem">
+
+            <ImageView
+                style="@style/BottomNavIcon"
+                android:src="@drawable/ic_unishop"
+                android:tint="#A8A7A7" />
+            <TextView style="@style/BottomNavLabel" android:text="UniShop" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nav_datas_calendar"
+            style="@style/BottomNavItem">
+            <ImageView style="@style/BottomNavIcon" android:src="@drawable/ic_calendar" app:tint="@color/white" />
+            <TextView style="@style/BottomNavLabel" android:text="Datas" android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

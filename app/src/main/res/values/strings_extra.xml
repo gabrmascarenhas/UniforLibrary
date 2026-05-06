@@ -1,0 +1,46 @@
+<resources>
+    <string name="sinopse_noite_taverna">\"Noite na Taverna\", publicado em 1855, é uma obra-prima do ultrarromantismo brasileiro de Álvares de Azevedo. A obra, de tom gótico, apresenta contos macabros narrados por jovens boêmios alcoolizados em uma taverna sombria, abordando temas como amor doentio, necrofilia, incesto e morte.</string>
+
+    <!-- Strings para Avaliar Usuários -->
+    <string name="label_avaliar_usuarios">Avaliar Usuários</string>
+    <string name="label_unifor">Unifor</string>
+    <string name="label_library">Library</string>
+
+    <string name="user_1">Rogério</string>
+    <string name="review_1">“Uma Noite na Taverna” é uma obra macabra e fascinante que mergulha no sombrio.</string>
+    <string name="rating_1">4,3/5</string>
+
+    <string name="user_2">Marney</string>
+    <string name="review_2">A atmosfera gótica e os contos boêmios criam uma experiência de leitura única.</string>
+    <string name="rating_2">4,5/5</string>
+
+    <string name="user_3">Tarrega</string>
+    <string name="review_3">Uma exploração profunda dos temas de morte e obsessão, essencial para o romantismo.</string>
+    <string name="rating_3">4,8/5</string>
+
+    <!-- Strings para Detalhes do Livro -->
+    <string name="book_title_detailed">“Uma Noite Na Taberna”</string>
+    <string name="rating_detailed">4,3/5</string>
+    <string name="availability_text">Este livro está disponível para leitura no momento!</string>
+    <string name="btn_details">Ver detalhes do livro</string>
+    <string name="btn_evaluate">Avaliar</string>
+    <string name="btn_read_pdf">Ler agora em PDF</string>
+
+    <!-- Strings para Criar Conta -->
+    <string name="label_matricula">Matrícula</string>
+    <string name="label_email">Email</string>
+    <string name="label_telefone">Telefone</string>
+    <string name="label_centro">Qual o seu centro?</string>
+    <string name="btn_criar_conta">Criar conta</string>
+
+    <!-- Strings para Diálogos -->
+    <string name="book_author">Autor: Álvares de Azevedo</string>
+    <string name="book_year">Ano: 1855</string>
+    <string name="book_publisher">Editora: Tipografia de J. J. da Rocha</string>
+    <string name="book_synopsis_label">Sinopse</string>
+    <string name="book_synopsis_text">"Noite na Taverna" é uma obra-prima do ultrarromantismo brasileiro de Álvares de Azevedo. Apresenta contos macabros narrados por jovens boêmios em uma taverna sombria.</string>
+
+    <string name="confirm_delete_msg">Você tem certeza que deseja excluir?</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_delete">Excluir</string>
+</resources>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="340dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_dialog_dark"
+    android:padding="16dp">
+
+    <!-- Ícone de Fechar (X) -->
+    <ImageView
+        android:id="@+id/btnCloseEval"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_blue_rounded_square"
+        android:backgroundTint="#000000"
+        android:padding="6dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#FFFFFF" />
+
+    <!-- Cabeçalho: Capa e Info -->
+    <LinearLayout
+        android:id="@+id/layoutHeaderEval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/btnCloseEval">
+
+        <FrameLayout
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            android:background="@drawable/bg_book_card">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/noite_na_taverna" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="“Uma Noite Na Taberna”"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Álvares de Azevedo"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4,3/5"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/ic_star"
+                    app:tint="#FFD700" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Estrelas de Avaliação -->
+    <LinearLayout
+        android:id="@+id/layoutStars"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/layoutHeaderEval">
+
+        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="4dp" android:src="@drawable/ic_star" app:tint="#FFFFFF" />
+        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="4dp" android:src="@drawable/ic_star" app:tint="#FFFFFF" />
+        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="4dp" android:src="@drawable/ic_star" app:tint="#FFFFFF" />
+        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="4dp" android:src="@drawable/ic_star" app:tint="#FFFFFF" />
+        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="4dp" android:src="@drawable/ic_star" app:tint="#FFFFFF" />
+    </LinearLayout>
+
+    <!-- Campo de Texto -->
+    <TextView
+        android:id="@+id/tvWriteEvalLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Escreva Uma Avaliação"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/layoutStars" />
+
+    <EditText
+        android:id="@+id/etCommentEval"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_eval_input"
+        android:gravity="top"
+        android:hint="Type here..."
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHint="#444444"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/tvWriteEvalLabel" />
+
+    <Button
+        android:id="@+id/btnSubmitEval"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_login_button"
+        android:text="Avaliar"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:backgroundTint="@null"
+        app:layout_constraintTop_toBottomOf="@id/etCommentEval" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".MainActivity">
+
+    <!-- Top Left Decoration -->
+
+    <!-- Bottom Right Decoration -->
+
+    <!-- Bottom Left Decoration -->
+
+    <ImageView
+        android:id="@+id/decorationTopLeft"
+        android:layout_width="101dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="-30dp"
+        android:layout_marginTop="-30dp"
+        android:rotation="0"
+        android:src="@drawable/unifor_logo01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/blue" />
+
+    <ImageView
+        android:id="@+id/decorationBottomRight"
+        android:layout_width="91dp"
+        android:layout_height="112dp"
+        android:layout_marginEnd="-40dp"
+        android:layout_marginBottom="80dp"
+        android:rotation="180"
+        android:src="@drawable/unifor_logo01"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/blue" />
+
+    <!-- Info Card -->
+    <ImageView
+        android:id="@+id/decorationBottomLeft"
+        android:layout_width="90dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="-20dp"
+        android:layout_marginBottom="-20dp"
+        android:src="@drawable/unifor_logo01"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/blue" />
+
+    <LinearLayout
+        android:id="@+id/infoCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/bg_white_rounded"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="12dp"
+            android:src="@android:drawable/ic_dialog_info"
+            app:tint="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Um link será mandado via email ou SMS para a definição da nova senha."
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/labelInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Digite sua Matrícula, Email ou Telefone."
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/infoCard"
+        app:layout_constraintTop_toBottomOf="@+id/infoCard" />
+
+    <EditText
+        android:id="@+id/inputField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_white_rounded"
+        android:hint="Type here..."
+        android:paddingHorizontal="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray_text"
+        app:layout_constraintEnd_toEndOf="@+id/infoCard"
+        app:layout_constraintStart_toStartOf="@+id/infoCard"
+        app:layout_constraintTop_toBottomOf="@+id/labelInput" />
+
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/blue"
+        android:text="Enviar link"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/inputField"
+        app:layout_constraintStart_toStartOf="@+id/inputField"
+        app:layout_constraintTop_toBottomOf="@+id/inputField" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
