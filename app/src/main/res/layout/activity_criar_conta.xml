@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#121212">
 
-    <!-- Logos decorativas PRIMEIRO para ficarem no FUNDO -->
+    <!-- Logos decorativas de fundo -->
     <ImageView
         android:id="@+id/logoTopLeft"
         android:layout_width="120dp"
@@ -40,13 +40,13 @@
         android:src="@drawable/unifor_logo01"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Branding Central -->
+s
+    <!-- Branding -->
     <LinearLayout
         android:id="@+id/layoutBranding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,135 +54,160 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@drawable/unifor_logo01" />
 
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:baselineAligned="true"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:text="@string/unifor"
-                android:textColor="#FFFFFF"
-                android:textSize="48sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:text="@string/library"
-                android:textColor="#FFFFFF"
-                android:textSize="32sp" />
-        </LinearLayout>
+            android:fontFamily="sans-serif"
+            android:text="Unifor Library"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Formulário -->
-    <LinearLayout
-        android:id="@+id/layoutForm"
+    <ScrollView
+        android:id="@+id/scrollForm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:orientation="vertical"
-        android:paddingHorizontal="32dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/btnCriarConta"
         app:layout_constraintTop_toBottomOf="@id/layoutBranding">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_matricula"
-            android:textColor="#AAAAAA"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/etMatricula"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_login_input"
-            android:inputType="number"
-            android:paddingHorizontal="12dp"
-            android:textColor="#000000"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/label_email"
-            android:textColor="#AAAAAA"
-            android:textSize="14sp" />
+            android:paddingHorizontal="32dp"
+            android:paddingBottom="20dp">
 
-        <EditText
-            android:id="@+id/etEmail"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_login_input"
-            android:inputType="textEmailAddress"
-            android:paddingHorizontal="12dp"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            <!-- Email -->
+            <TextView
+                android:id="@+id/lblEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_email"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/label_telefone"
-            android:textColor="#AAAAAA"
-            android:textSize="14sp" />
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_login_input"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="12dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblEmail" />
 
-        <EditText
-            android:id="@+id/etTelefone"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_login_input"
-            android:inputType="phone"
-            android:paddingHorizontal="12dp"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            <!-- Matrícula -->
+            <TextView
+                android:id="@+id/lblMatricula"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_matricula"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/label_centro"
-            android:textColor="#AAAAAA"
-            android:textSize="14sp" />
+            <EditText
+                android:id="@+id/etMatricula"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_login_input"
+                android:hint="Matrícula"
+                android:inputType="number"
+                android:paddingHorizontal="12dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblMatricula" />
 
-        <EditText
-            android:id="@+id/etCentro"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_login_input"
-            android:inputType="text"
-            android:paddingHorizontal="12dp"
-            android:textColor="#000000"
-            android:textSize="16sp" />
-    </LinearLayout>
+            <!-- Senha -->
+            <TextView
+                android:id="@+id/lblSenha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_senha"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etMatricula" />
+
+            <EditText
+                android:id="@+id/etSenha"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_login_input"
+                android:hint="Senha"
+                android:inputType="textPassword"
+                android:paddingHorizontal="12dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblSenha" />
+
+            <!-- Centro -->
+            <TextView
+                android:id="@+id/lblCentro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_centro"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etSenha" />
+
+            <EditText
+                android:id="@+id/etCentro"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_login_input"
+                android:hint="Centro"
+                android:inputType="text"
+                android:paddingHorizontal="12dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblCentro" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/btnCriarConta"
         android:layout_width="220dp"
         android:layout_height="48dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/bg_login_button"
         android:text="@string/btn_criar_conta"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutForm" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

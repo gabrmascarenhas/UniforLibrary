@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         tvCreateAccount.setOnClickListener {
-            val intent = Intent(this, TelasGabrActivity::class.java)
+            val intent = Intent(this, CriarContaActivity::class.java)
             startActivity(intent)
         }
 
