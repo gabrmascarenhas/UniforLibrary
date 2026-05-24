@@ -89,6 +89,7 @@
         app:layout_constraintTop_toBottomOf="@+id/dividerHeader">
 
         <Button
+            android:id="@+id/btnMochila"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="?attr/selectableItemBackground"
@@ -100,6 +101,7 @@
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
 
         <Button
+            android:id="@+id/btnCamisa"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="?attr/selectableItemBackground"
@@ -111,6 +113,7 @@
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
 
         <Button
+            android:id="@+id/btnCaneca"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="?attr/selectableItemBackground"
@@ -122,6 +125,7 @@
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
 
         <Button
+            android:id="@+id/btnComprarLivro"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="?attr/selectableItemBackground"
@@ -133,6 +137,7 @@
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
 
         <Button
+            android:id="@+id/btnDigitalizarLivro"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="?attr/selectableItemBackground"
@@ -144,6 +149,7 @@
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
 
         <Button
+            android:id="@+id/btnCafe"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="?attr/selectableItemBackground"

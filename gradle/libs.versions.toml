@@ -1,5 +1,9 @@
 [versions]
+<<<<<<< HEAD
 agp = "9.2.1"
+=======
+agp = "9.1.0"
+>>>>>>> 927f1682055b798e85163c53a2e5d3e3568954f5
 kotlin = "2.2.10"
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -34,5 +38,8 @@ googleid = { group = "com.google.android.libraries.identity.googleid", name = "g
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+<<<<<<< HEAD
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 
+=======
+>>>>>>> 927f1682055b798e85163c53a2e5d3e3568954f5
