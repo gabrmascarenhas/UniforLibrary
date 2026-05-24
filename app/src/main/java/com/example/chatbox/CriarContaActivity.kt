@@ -43,7 +43,9 @@ class CriarContaActivity : AppCompatActivity() {
                                 val userMap = mapOf(
                                     "matricula" to matricula,
                                     "centro" to centro,
-                                    "email" to email
+                                    "email" to email,
+                                    "senha" to senha,
+                                    "admin" to false
                                 )
 
                                 database.child("users").child(userId).setValue(userMap)
