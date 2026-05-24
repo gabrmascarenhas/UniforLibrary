@@ -1,8 +1,13 @@
 package com.example.chatbox
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class TelaLojaCustodioActivity : AppCompatActivity() {
@@ -21,13 +26,66 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.nav_perfil_loja)?.setOnClickListener {
-            // Aqui precisaria saber se é admin ou não para decidir a tela
-            // Como é um redirecionamento simples, vamos deixar para o fluxo normal de login
+            // Implementação futura para perfil
         }
 
         findViewById<View>(R.id.nav_data_loja)?.setOnClickListener {
             val intent = Intent(this, CalendarActivity::class.java)
             startActivity(intent)
         }
+
+        // Configurar cliques nos itens da loja
+        setupStoreItems()
+    }
+
+    private fun setupStoreItems() {
+        val items = listOf(
+            R.id.btnMochila,
+            R.id.btnCamisa,
+            R.id.btnCaneca,
+            R.id.btnComprarLivro,
+            R.id.btnDigitalizarLivro,
+            R.id.btnCafe
+        )
+
+        items.forEach { id ->
+            findViewById<View>(id)?.setOnClickListener {
+                showPurchaseConfirmationDialog()
+            }
+        }
+    }
+
+    private fun showPurchaseConfirmationDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_confirm_purchase)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val btnConfirm = dialog.findViewById<Button>(R.id.btnConfirm)
+        val btnClose = dialog.findViewById<ImageView>(R.id.btnClose)
+
+        btnConfirm.setOnClickListener {
+            dialog.dismiss()
+            showPurchaseSuccessDialog()
+        }
+
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showPurchaseSuccessDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_purchase_success)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val btnClose = dialog.findViewById<ImageView>(R.id.btnCloseSuccess)
+
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }
