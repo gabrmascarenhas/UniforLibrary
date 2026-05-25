@@ -32,40 +32,4 @@ class RepositorioLivros {
     suspend fun removerLivro(livroId: String) {
         db.child("livros").child(livroId).removeValue().await()
     }
-
-    suspend fun listarLivros(): List<Livro> =
-        suspendCancellableCoroutine { cont ->
-            db.child("livros").addListenerForSingleValueEvent(
-                object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val livros = snapshot.children.mapNotNull { snap ->
-                            snap.getValue(Livro::class.java)
-                        }
-                        cont.resume(livros)
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        cont.resumeWithException(error.toException())
-                    }
-                }
-            )
-        }
-
-    //callback
-    fun ouvirLivros(onChange: (List<Livro>) -> Unit): ValueEventListener {
-        val listener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val livros = snapshot.children.mapNotNull { snap ->
-                    snap.getValue(Livro::class.java)
-                }
-                onChange(livros)
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        }
-        db.child("livros").addValueEventListener(listener)
-        return listener // guarde para remover depois
-    }
-
-    fun pararDeOuvir(listener: ValueEventListener) {
-        db.child("livros").removeEventListener(listener)
-    }
 }
