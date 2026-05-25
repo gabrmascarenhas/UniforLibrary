@@ -22,6 +22,7 @@ class CriarContaActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_criar_conta)
 
+        val etNome = findViewById<EditText>(R.id.etNome)
         val etMatricula = findViewById<EditText>(R.id.etMatricula)
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etSenha = findViewById<EditText>(R.id.etSenha)
@@ -29,24 +30,20 @@ class CriarContaActivity : AppCompatActivity() {
         val btnCriarConta = findViewById<Button>(R.id.btnCriarConta)
 
         btnCriarConta.setOnClickListener {
-            val matricula = etMatricula.text.toString()
-            val email = etEmail.text.toString()
-            val senha = etSenha.text.toString()
-            val centro = etCentro.text.toString()
+            val nome = etNome.text.toString().trim()
+            val matricula = etMatricula.text.toString().trim()
+            val email = etEmail.text.toString().trim()
+            val senha = etSenha.text.toString().trim()
+            val centro = etCentro.text.toString().trim()
 
-            if (email.isNotEmpty() && senha.isNotEmpty() && matricula.isNotEmpty() && centro.isNotEmpty()) {
-                val matriculaNum = matricula.toLongOrNull()
-                if (matriculaNum == null) {
-                    Toast.makeText(this, "Matrícula inválida. Use apenas números.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
+            if (nome.isNotEmpty() && email.isNotEmpty() && senha.isNotEmpty() && matricula.isNotEmpty() && centro.isNotEmpty()) {
                 auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             val userId = auth.currentUser?.uid
                             if (userId != null) {
                                 val userMap = mapOf(
+                                    "nome" to nome,
                                     "matricula" to matricula,
                                     "centro" to centro,
                                     "email" to email,

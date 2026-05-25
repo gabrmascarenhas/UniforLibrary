@@ -33,6 +33,7 @@ class LoginAdminActivity : AppCompatActivity() {
                     val email = user.child("email").getValue(String::class.java) ?: ""
                     val isAdmin = user.child("admin").getValue(Boolean::class.java) ?: false
 
+
                     // 2. Bloqueia usuário comum (Só entra se isAdmin for true)
                     if (!isAdmin) return toast("Acesso Negado: Você não é administrador")
 
