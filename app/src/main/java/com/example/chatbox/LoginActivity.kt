@@ -52,13 +52,6 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val matricula = matriculaTexto.toLongOrNull()
-
-            if (matricula == null) {
-                Toast.makeText(this, "Matrícula inválida", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             Log.d("LOGIN_DEBUG", "Tentando login com matricula: $matriculaTexto")
             loginWithMatricula(matriculaTexto, senha)
         }

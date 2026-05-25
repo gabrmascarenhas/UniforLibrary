@@ -62,34 +62,37 @@ class LoginAdminActivity : AppCompatActivity() {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        val userSnapshot = snapshot.children.first()
-                        val email = userSnapshot.child("email").getValue(String::class.java)
-                        val isAdmin = userSnapshot.child("admin").getValue(Boolean::class.java) ?: false
+                        // Como a busca é por matrícula, pegamos o primeiro (e idealmente único) resultado
+                        for (userSnapshot in snapshot.children) {
+                            val email = userSnapshot.child("email").getValue(String::class.java)
+                            val isAdmin = userSnapshot.child("admin").getValue(Boolean::class.java) ?: false
 
-                        // BLOQUEIO: Se NÃO for admin, não pode logar por esta tela
-                        if (!isAdmin) {
-                            Toast.makeText(this@LoginAdminActivity, "Acesso Negado: Você não é um administrador", Toast.LENGTH_LONG).show()
-                            return
-                        }
+                            // BLOQUEIO: Se NÃO for admin, não pode logar por esta tela
+                            if (!isAdmin) {
+                                Toast.makeText(this@LoginAdminActivity, "Acesso Negado: Você não é um administrador", Toast.LENGTH_LONG).show()
+                                return
+                            }
 
-                        if (!email.isNullOrEmpty()) {
-                            // Tenta logar no Authenticator do Firebase
-                            auth.signInWithEmailAndPassword(email, senha)
-                                .addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        val intent = Intent(this@LoginAdminActivity, LibraryHomeActivity::class.java)
-                                        intent.putExtra("IS_ADMIN", true)
-                                        startActivity(intent)
-                                        finish()
-                                    } else {
-                                        goToErrorScreen()
+                            if (!email.isNullOrEmpty()) {
+                                // Tenta logar no Authenticator do Firebase
+                                auth.signInWithEmailAndPassword(email, senha)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            val intent = Intent(this@LoginAdminActivity, LibraryHomeActivity::class.java)
+                                            intent.putExtra("IS_ADMIN", true)
+                                            startActivity(intent)
+                                            finish()
+                                        } else {
+                                            goToErrorScreen()
+                                        }
                                     }
-                                }
-                        } else {
-                            goToErrorScreen()
+                            } else {
+                                goToErrorScreen()
+                            }
                         }
                     } else {
-                        goToErrorScreen()
+                        // Matrícula não encontrada no banco
+                        Toast.makeText(this@LoginAdminActivity, "Administrador não encontrado", Toast.LENGTH_SHORT).show()
                     }
                 }
 
