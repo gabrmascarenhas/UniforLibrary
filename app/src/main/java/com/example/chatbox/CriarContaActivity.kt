@@ -35,6 +35,12 @@ class CriarContaActivity : AppCompatActivity() {
             val centro = etCentro.text.toString()
 
             if (email.isNotEmpty() && senha.isNotEmpty() && matricula.isNotEmpty() && centro.isNotEmpty()) {
+                val matriculaNum = matricula.toLongOrNull()
+                if (matriculaNum == null) {
+                    Toast.makeText(this, "Matrícula inválida. Use apenas números.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {

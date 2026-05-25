@@ -8,19 +8,19 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 class LoginAdminActivity : AppCompatActivity() {
 
-    private val auth = FirebaseAuth.getInstance()
-    private val database = FirebaseDatabase.getInstance().reference
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_admin)
+
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
 
         val etMatricula = findViewById<EditText>(R.id.etMatricula)
         val etSenha = findViewById<EditText>(R.id.etSenha)
@@ -30,87 +30,76 @@ class LoginAdminActivity : AppCompatActivity() {
         val tvCreateAccount = findViewById<TextView>(R.id.tvCreateAccount)
 
         tvForgotPassword.setOnClickListener {
-            val intent = Intent(this, CalendarMainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, CalendarMainActivity::class.java))
         }
 
         tvCreateAccount.setOnClickListener {
-            val intent = Intent(this, TelasGabrActivity::class.java)
-            startActivity(intent)
-        }
-
-        btnLogin.setOnClickListener {
-            val matricula = etMatricula.text.toString().trim()
-            val senha = etSenha.text.toString().trim()
-
-            if (matricula.isEmpty() || senha.isEmpty()) {
-                Toast.makeText(this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            loginWithMatricula(matricula, senha)
+            startActivity(Intent(this, TelasGabrActivity::class.java))
         }
 
         btnBack.setOnClickListener {
             finish()
         }
+
+        btnLogin.setOnClickListener {
+            val matriculaText = etMatricula.text.toString().trim()
+            val senha = etSenha.text.toString().trim()
+
+            if (matriculaText.isEmpty() || senha.isEmpty()) {
+                Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            loginAsAdmin(matriculaText, senha)
+        }
     }
 
-    private fun loginWithMatricula(matricula: String, senha: String) {
-        database.child("users").orderByChild("matricula").equalTo(matricula)
+    private fun loginAsAdmin(matricula: String, senha: String) {
+        // Conecta ao banco de dados para validar matrícula e verificar status de Admin
+        database.child("users")
+            .orderByChild("matricula")
+            .equalTo(matricula)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        validateAdmin(snapshot.children.first(), senha)
-                    } else {
-                        val matriculaNum = matricula.toDoubleOrNull()
-                        if (matriculaNum != null) {
-                            database.child("users").orderByChild("matricula").equalTo(matriculaNum)
-                                .addListenerForSingleValueEvent(object : ValueEventListener {
-                                    override fun onDataChange(snap: DataSnapshot) {
-                                        if (snap.exists()) {
-                                            validateAdmin(snap.children.first(), senha)
-                                        } else {
-                                            showError()
-                                        }
-                                    }
-                                    override fun onCancelled(error: DatabaseError) { showError() }
-                                })
-                        } else {
-                            showError()
+                        val userSnapshot = snapshot.children.first()
+                        val email = userSnapshot.child("email").getValue(String::class.java)
+                        val isAdmin = userSnapshot.child("admin").getValue(Boolean::class.java) ?: false
+
+                        // BLOQUEIO: Se NÃO for admin, não pode logar por esta tela
+                        if (!isAdmin) {
+                            Toast.makeText(this@LoginAdminActivity, "Acesso Negado: Você não é um administrador", Toast.LENGTH_LONG).show()
+                            return
                         }
+
+                        if (!email.isNullOrEmpty()) {
+                            // Tenta logar no Authenticator do Firebase
+                            auth.signInWithEmailAndPassword(email, senha)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        val intent = Intent(this@LoginAdminActivity, LibraryHomeActivity::class.java)
+                                        intent.putExtra("IS_ADMIN", true)
+                                        startActivity(intent)
+                                        finish()
+                                    } else {
+                                        goToErrorScreen()
+                                    }
+                                }
+                        } else {
+                            goToErrorScreen()
+                        }
+                    } else {
+                        goToErrorScreen()
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    showError()
+                    Toast.makeText(this@LoginAdminActivity, "Erro de conexão: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
             })
     }
 
-    private fun validateAdmin(userSnapshot: DataSnapshot, senhaDigitada: String) {
-        val senhaNoDB = userSnapshot.child("senha").getValue(String::class.java)
-        val isAdmin = userSnapshot.child("admin").getValue(Boolean::class.java) ?: false
-        val email = userSnapshot.child("email").getValue(String::class.java)
-
-        if (senhaNoDB == senhaDigitada) {
-            if (isAdmin) {
-                if (email != null) {
-                    auth.signInWithEmailAndPassword(email, senhaDigitada)
-                }
-                val intent = Intent(this, LibraryHomeActivity::class.java)
-                intent.putExtra("IS_ADMIN", true)
-                startActivity(intent)
-                finish()
-            } else {
-                Toast.makeText(this, "Acesso negado: você não é um administrador", Toast.LENGTH_LONG).show()
-            }
-        } else {
-            showError()
-        }
-    }
-
-    private fun showError() {
+    private fun goToErrorScreen() {
         val intent = Intent(this, LoginErrorPasswordActivity::class.java)
         startActivity(intent)
     }

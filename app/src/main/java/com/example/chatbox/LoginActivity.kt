@@ -2,25 +2,26 @@ package com.example.chatbox
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 class LoginActivity : AppCompatActivity() {
 
-    private val auth = FirebaseAuth.getInstance()
-    private val database = FirebaseDatabase.getInstance().reference
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
 
         val etMatricula = findViewById<EditText>(R.id.etMatricula)
         val etSenha = findViewById<EditText>(R.id.etSenha)
@@ -30,91 +31,139 @@ class LoginActivity : AppCompatActivity() {
         val tvCreateAccount = findViewById<TextView>(R.id.tvCreateAccount)
 
         tvForgotPassword.setOnClickListener {
-            val intent = Intent(this, CalendarMainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, CalendarMainActivity::class.java))
         }
 
         tvCreateAccount.setOnClickListener {
-            val intent = Intent(this, CriarContaActivity::class.java)
-            startActivity(intent)
-        }
-
-        btnLogin.setOnClickListener {
-            val matricula = etMatricula.text.toString().trim()
-            val senha = etSenha.text.toString().trim()
-
-            if (matricula.isEmpty() || senha.isEmpty()) {
-                Toast.makeText(this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            loginWithMatricula(matricula, senha)
+            startActivity(Intent(this, CriarContaActivity::class.java))
         }
 
         btnAdmin.setOnClickListener {
-            val intent = Intent(this, LoginAdminActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, LoginAdminActivity::class.java))
         }
-        
-        // Outros listeners (Login, Criar Conta, etc) podem ser adicionados aqui
+
+        btnLogin.setOnClickListener {
+
+            val matriculaTexto = etMatricula.text.toString().trim()
+            val senha = etSenha.text.toString().trim()
+
+            if (matriculaTexto.isEmpty() || senha.isEmpty()) {
+                Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val matricula = matriculaTexto.toLongOrNull()
+
+            if (matricula == null) {
+                Toast.makeText(this, "Matrícula inválida", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            Log.d("LOGIN_DEBUG", "Tentando login com matricula: $matriculaTexto")
+            loginWithMatricula(matriculaTexto, senha)
+        }
     }
 
     private fun loginWithMatricula(matricula: String, senha: String) {
-        // Tenta buscar por matrícula (como String)
-        database.child("users").orderByChild("matricula").equalTo(matricula)
+
+        database.child("users")
+            .orderByChild("matricula")
+            .equalTo(matricula)
             .addListenerForSingleValueEvent(object : ValueEventListener {
+
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        validateUser(snapshot.children.first(), senha)
-                    } else {
-                        // Tenta buscar como número se falhar como String
-                        val matriculaNum = matricula.toDoubleOrNull()
-                        if (matriculaNum != null) {
-                            database.child("users").orderByChild("matricula").equalTo(matriculaNum)
-                                .addListenerForSingleValueEvent(object : ValueEventListener {
-                                    override fun onDataChange(snap: DataSnapshot) {
-                                        if (snap.exists()) {
-                                            validateUser(snap.children.first(), senha)
-                                        } else {
-                                            showError()
-                                        }
-                                    }
-                                    override fun onCancelled(error: DatabaseError) { showError() }
-                                })
-                        } else {
-                            showError()
+                    Log.d("LOGIN_DEBUG", "onDataChange: snapshot.exists() = ${snapshot.exists()}")
+                    Log.d("LOGIN_DEBUG", "onDataChange: snapshot.childrenCount = ${snapshot.childrenCount}")
+
+                    if (!snapshot.exists()) {
+
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Usuário não encontrado",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return
+                    }
+
+                    for (userSnapshot in snapshot.children) {
+
+                        val email = userSnapshot.child("email")
+                            .getValue(String::class.java)
+
+                        val isAdmin = userSnapshot.child("admin")
+                            .getValue(Boolean::class.java) ?: false
+
+                        if (isAdmin) {
+
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Use o login de administrador",
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            return
                         }
+
+                        if (email.isNullOrEmpty()) {
+
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Email não encontrado",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            return
+                        }
+
+                        auth.signInWithEmailAndPassword(email, senha)
+                            .addOnCompleteListener { task ->
+
+                                if (task.isSuccessful) {
+
+                                    Toast.makeText(
+                                        this@LoginActivity,
+                                        "Login realizado com sucesso",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    startActivity(
+                                        Intent(
+                                            this@LoginActivity,
+                                            LibraryHomeActivity::class.java
+                                        )
+                                    )
+
+                                    finish()
+
+                                } else {
+
+                                    // ERRO COMPLETO NO LOGCAT
+                                    Log.e(
+                                        "LOGIN_ERROR",
+                                        task.exception.toString()
+                                    )
+
+                                    // MOSTRA O ERRO REAL NA TELA
+                                    Toast.makeText(
+                                        this@LoginActivity,
+                                        task.exception?.message
+                                            ?: "Erro desconhecido",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    showError()
+
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Erro no banco: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
-
-    private fun validateUser(userSnapshot: DataSnapshot, senhaDigitada: String) {
-        val senhaNoDB = userSnapshot.child("senha").getValue(String::class.java)
-        val isAdmin = userSnapshot.child("admin").getValue(Boolean::class.java) ?: false
-        val email = userSnapshot.child("email").getValue(String::class.java)
-
-        if (senhaNoDB == senhaDigitada) {
-            // Se houver e-mail, faz o login no Auth também para manter a sessão ativa
-            if (email != null) {
-                auth.signInWithEmailAndPassword(email, senhaDigitada)
-            }
-            
-            val intent = Intent(this, LibraryHomeActivity::class.java)
-            intent.putExtra("IS_ADMIN", isAdmin)
-            startActivity(intent)
-            finish()
-        } else {
-            showError()
-        }
     }
-
-    private fun showError() {
-        val intent = Intent(this, LoginErrorPasswordActivity::class.java)
-        startActivity(intent)
-    }
-}
