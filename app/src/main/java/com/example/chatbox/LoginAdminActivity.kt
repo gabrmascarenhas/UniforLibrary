@@ -2,108 +2,56 @@ package com.example.chatbox
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class LoginAdminActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var database: DatabaseReference
+    private val auth by lazy { FirebaseAuth.getInstance() }
+    private val db by lazy { FirebaseDatabase.getInstance().getReference("users") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_admin)
 
-        auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance().reference
-
         val etMatricula = findViewById<EditText>(R.id.etMatricula)
         val etSenha = findViewById<EditText>(R.id.etSenha)
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-        val btnBack = findViewById<Button>(R.id.btnBack)
-        val tvForgotPassword = findViewById<TextView>(R.id.tvForgotPassword)
-        val tvCreateAccount = findViewById<TextView>(R.id.tvCreateAccount)
 
-        tvForgotPassword.setOnClickListener {
-            startActivity(Intent(this, CalendarMainActivity::class.java))
-        }
-
-        tvCreateAccount.setOnClickListener {
-            startActivity(Intent(this, TelasGabrActivity::class.java))
-        }
-
-        btnBack.setOnClickListener {
-            finish()
-        }
-
-        btnLogin.setOnClickListener {
-            val matriculaText = etMatricula.text.toString().trim()
+        findViewById<Button>(R.id.btnLogin).setOnClickListener {
+            val matricula = etMatricula.text.toString().trim()
             val senha = etSenha.text.toString().trim()
 
-            if (matriculaText.isEmpty() || senha.isEmpty()) {
-                Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            if (matricula.isEmpty() || senha.isEmpty()) return@setOnClickListener toast("Preencha tudo")
 
-            loginAsAdmin(matriculaText, senha)
-        }
-    }
-
-    private fun loginAsAdmin(matricula: String, senha: String) {
-        // Conecta ao banco de dados para validar matrícula e verificar status de Admin
-        database.child("users")
-            .orderByChild("matricula")
-            .equalTo(matricula)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+            // 1. Busca admin pela matrícula
+            db.orderByChild("matricula").equalTo(matricula).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        // Como a busca é por matrícula, pegamos o primeiro (e idealmente único) resultado
-                        for (userSnapshot in snapshot.children) {
-                            val email = userSnapshot.child("email").getValue(String::class.java)
-                            val isAdmin = userSnapshot.child("admin").getValue(Boolean::class.java) ?: false
+                    val user = snapshot.children.firstOrNull() ?: return toast("Admin não encontrado")
+                    
+                    val email = user.child("email").getValue(String::class.java) ?: ""
+                    val isAdmin = user.child("admin").getValue(Boolean::class.java) ?: false
 
-                            // BLOQUEIO: Se NÃO for admin, não pode logar por esta tela
-                            if (!isAdmin) {
-                                Toast.makeText(this@LoginAdminActivity, "Acesso Negado: Você não é um administrador", Toast.LENGTH_LONG).show()
-                                return
-                            }
+                    // 2. Bloqueia usuário comum nesta tela
+                    if (!isAdmin) return toast("Acesso Negado: Você não é admin")
 
-                            if (!email.isNullOrEmpty()) {
-                                // Tenta logar no Authenticator do Firebase
-                                auth.signInWithEmailAndPassword(email, senha)
-                                    .addOnCompleteListener { task ->
-                                        if (task.isSuccessful) {
-                                            val intent = Intent(this@LoginAdminActivity, LibraryHomeActivity::class.java)
-                                            intent.putExtra("IS_ADMIN", true)
-                                            startActivity(intent)
-                                            finish()
-                                        } else {
-                                            goToErrorScreen()
-                                        }
-                                    }
-                            } else {
-                                goToErrorScreen()
-                            }
-                        }
-                    } else {
-                        // Matrícula não encontrada no banco
-                        Toast.makeText(this@LoginAdminActivity, "Administrador não encontrado", Toast.LENGTH_SHORT).show()
+                    // 3. Autentica
+                    auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val intent = Intent(this@LoginAdminActivity, LibraryHomeActivity::class.java)
+                            intent.putExtra("IS_ADMIN", true)
+                            startActivity(intent)
+                            finish()
+                        } else toast("Senha incorreta")
                     }
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@LoginAdminActivity, "Erro de conexão: ${error.message}", Toast.LENGTH_SHORT).show()
-                }
+                override fun onCancelled(error: DatabaseError) = toast(error.message)
             })
+        }
+
+        findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
     }
 
-    private fun goToErrorScreen() {
-        val intent = Intent(this, LoginErrorPasswordActivity::class.java)
-        startActivity(intent)
-    }
+    private fun toast(m: String) = Toast.makeText(this, m, Toast.LENGTH_SHORT).show()
 }
