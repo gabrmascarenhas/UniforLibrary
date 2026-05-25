@@ -56,24 +56,28 @@ class LibraryHomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Lista de IDs dos FrameLayouts dos livros no XML
-        val bookIds = listOf(
-            R.id.book_norma, R.id.book_legado, R.id.book_sobotta,
-            R.id.book_sentido, R.id.book_red_center, R.id.book_crime,
-            R.id.book_noite_taverna, R.id.book_jazz, R.id.book_lines,
-            R.id.book_expressionismo, R.id.book_teologia, R.id.book_dadaismo
-        )
-
         // Configurar o clique para cada livro
-        bookIds.forEach { id ->
-            findViewById<View>(id)?.setOnClickListener {
-                if (id == R.id.book_noite_taverna) {
-                    val intent = Intent(this, AvaliacoesDetalhesActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    showAccessBookDialog()
-                }
-            }
+        setupBookClick(R.id.book_norma, "Teoria da Norma Jurídica", R.drawable.book_norma, "4,8/5")
+        setupBookClick(R.id.book_legado, "Código Legado", R.drawable.book_legado, "4,6/5")
+        setupBookClick(R.id.book_sobotta, "Sobotta", R.drawable.book_sobotta, "4,9/5")
+        setupBookClick(R.id.book_sentido, "Em Busca de Sentido", R.drawable.book_sentido, "4,7/5")
+        setupBookClick(R.id.book_red_center, "O Homem e Seus Símbolos", R.drawable.book_red_center, "4,5/5")
+        setupBookClick(R.id.book_crime, "Crime e Castigo", R.drawable.book_crime, "4,8/5")
+        setupBookClick(R.id.book_noite_taverna, "Noite na Taverna", R.drawable.noite_na_taverna, "4,3/5")
+        setupBookClick(R.id.book_jazz, "Jazz", R.drawable.book_jazz, "4,4/5")
+        setupBookClick(R.id.book_lines, "Lines", R.drawable.book_81h, "4,2/5")
+        setupBookClick(R.id.book_expressionismo, "Expressionismo", R.drawable.book_expressionismo, "4,5/5")
+        setupBookClick(R.id.book_teologia, "A Teologia do Livro de Apocalipse", R.drawable.book_teologia, "4,6/5")
+        setupBookClick(R.id.book_dadaismo, "Dadaismo", R.drawable.book_41v, "4,4/5")
+    }
+
+    private fun setupBookClick(viewId: Int, title: String, imageRes: Int, rating: String) {
+        findViewById<View>(viewId)?.setOnClickListener {
+            val intent = Intent(this, DetalhesLivroActivity::class.java)
+            intent.putExtra("BOOK_TITLE", title)
+            intent.putExtra("BOOK_IMAGE", imageRes)
+            intent.putExtra("BOOK_RATING", rating)
+            startActivity(intent)
         }
     }
 
@@ -86,26 +90,5 @@ class LibraryHomeActivity : AppCompatActivity() {
             val intent = Intent(this, perfiluser::class.java)
             startActivity(intent)
         }
-    }
-
-    private fun showAccessBookDialog() {
-        val dialog = Dialog(this)
-        dialog.setContentView(R.layout.dialog_access_book)
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        val btnYes = dialog.findViewById<Button>(R.id.btnYes)
-        val btnNo = dialog.findViewById<Button>(R.id.btnNo)
-
-        btnYes.setOnClickListener {
-            val intent = Intent(this, DetalhesLivroActivity::class.java)
-            startActivity(intent)
-            dialog.dismiss()
-        }
-
-        btnNo.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
     }
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_dialog_dark"
+    android:padding="24dp">
+
+    <ImageView
+        android:id="@+id/btnCloseReview"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/tvBookTitleDialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Título do Livro"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btnCloseReview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvReviewLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Minha Avaliação:"
+        android:textColor="#0437DC"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvBookTitleDialog" />
+
+    <TextView
+        android:id="@+id/tvReviewContentDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Conteúdo da review vai aqui..."
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:lineSpacingExtra="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvReviewLabel" />
+
+    <TextView
+        android:id="@+id/tvReviewDateDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="01/01/2024"
+        android:textColor="#AAAAAA"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvReviewContentDialog" />
+
+    <ImageView
+        android:id="@+id/ivDeleteReview"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvReviewContentDialog"
+        app:tint="#FF4444" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
