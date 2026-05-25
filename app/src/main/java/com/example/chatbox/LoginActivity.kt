@@ -86,6 +86,9 @@ class LoginActivity : AppCompatActivity() {
 
                         val isAdmin = userSnapshot.child("admin")
                             .getValue(Boolean::class.java) ?: false
+                        
+                        val nome = userSnapshot.child("nome").getValue(String::class.java)
+                        val matriculaDb = userSnapshot.child("matricula").getValue(String::class.java)
 
                         if (isAdmin) {
 
@@ -113,6 +116,9 @@ class LoginActivity : AppCompatActivity() {
                             .addOnCompleteListener { task ->
 
                                 if (task.isSuccessful) {
+                                    // Armazenar dados do usuário logado
+                                    UserManager.userName = nome ?: "Usuário Desconhecido"
+                                    UserManager.userMatricula = matriculaDb ?: matricula
 
                                     Toast.makeText(
                                         this@LoginActivity,
@@ -159,4 +165,4 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
     }
-    }
+}

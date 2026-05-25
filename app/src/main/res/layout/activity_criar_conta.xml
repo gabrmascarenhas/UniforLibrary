@@ -40,7 +40,7 @@
         android:src="@drawable/unifor_logo01"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-s
+
     <!-- Branding -->
     <LinearLayout
         android:id="@+id/layoutBranding"
@@ -85,16 +85,43 @@ s
             android:paddingHorizontal="32dp"
             android:paddingBottom="20dp">
 
+            <!-- Nome -->
+            <TextView
+                android:id="@+id/lblNome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nome Completo"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/etNome"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_login_input"
+                android:hint="Nome"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="12dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblNome" />
+
             <!-- Email -->
             <TextView
                 android:id="@+id/lblEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="@string/label_email"
                 android:textColor="#AAAAAA"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/etNome" />
 
             <EditText
                 android:id="@+id/etEmail"
