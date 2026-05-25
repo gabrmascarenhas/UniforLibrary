@@ -25,7 +25,9 @@ class ReviewsActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.book_noite_taverna_reviews)?.setOnClickListener {
-            val intent = Intent(this, AvaliacoesDetalhesActivity::class.java)
+            val intent = Intent(this, ListaResenhasActivity::class.java)
+            intent.putExtra("LIVRO_ID", "noite_na_taverna_id") // ID de exemplo
+            intent.putExtra("IS_ADMIN", true) // Forçando admin para você testar o apagar
             startActivity(intent)
         }
     }

@@ -3,6 +3,7 @@ package com.example.chatbox
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -30,6 +31,11 @@ class perfiladm : AppCompatActivity() {
 
         findViewById<View>(R.id.nav_data_adm)?.setOnClickListener {
             val intent = Intent(this, CalendarActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<Button>(R.id.button3)?.setOnClickListener {
+            val intent = Intent(this, CadastroLivroActivity::class.java)
             startActivity(intent)
         }
 

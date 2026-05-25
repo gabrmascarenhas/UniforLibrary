@@ -16,7 +16,7 @@ class CriarContaActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance().reference
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,19 +30,13 @@ class CriarContaActivity : AppCompatActivity() {
         val btnCriarConta = findViewById<Button>(R.id.btnCriarConta)
 
         btnCriarConta.setOnClickListener {
-            val nome = etNome.text.toString()
-            val matricula = etMatricula.text.toString()
-            val email = etEmail.text.toString()
-            val senha = etSenha.text.toString()
-            val centro = etCentro.text.toString()
+            val nome = etNome.text.toString().trim()
+            val matricula = etMatricula.text.toString().trim()
+            val email = etEmail.text.toString().trim()
+            val senha = etSenha.text.toString().trim()
+            val centro = etCentro.text.toString().trim()
 
             if (nome.isNotEmpty() && email.isNotEmpty() && senha.isNotEmpty() && matricula.isNotEmpty() && centro.isNotEmpty()) {
-                val matriculaNum = matricula.toLongOrNull()
-                if (matriculaNum == null) {
-                    Toast.makeText(this, "Matrícula inválida. Use apenas números.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
                 auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {

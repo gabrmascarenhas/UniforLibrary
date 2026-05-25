@@ -12,11 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false">
-        </activity>
-
+        <activity android:name=".LoginActivity" android:exported="false" />
         <activity android:name=".LoginAdminActivity" android:exported="false" />
         <activity android:name=".LoginErrorPasswordActivity" android:exported="false" />
         <activity android:name=".LoginErrorUserActivity" android:exported="false" />
@@ -32,14 +28,18 @@
         <activity android:name=".CalendarActivity" android:exported="false" />
         <activity android:name=".perfiladm" android:exported="false" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".perfiluser" android:exported="false" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity android:name=".TelaInicial" android:exported="true" />
+
         <activity
-            android:name=".TelaInicial"
+            android:name=".CadastroLivroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".requisitarlivro" android:exported="false" />
         <activity android:name=".RequisitarLivroCustodioActivity" android:exported="false" />
         <activity android:name=".LojaCustodioPontosActivity" android:exported="false" />
@@ -47,6 +47,7 @@
         <activity android:name=".ResetPasswordActivity" android:exported="false" />
         <activity android:name=".AvaliacoesDetalhesActivity" android:exported="false" />
         <activity android:name=".AvaliarUsuariosActivity" android:exported="false" />
+        <activity android:name=".ListaResenhasActivity" android:exported="false" />
 
     </application>
 
