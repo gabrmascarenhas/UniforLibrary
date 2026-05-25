@@ -23,7 +23,6 @@ class RepositorioLivros {
         return ref.downloadUrl.await().toString()
     }
     suspend fun adicionarLivro(livro: Livro) {
-        // push() gera uma chave única automática (ex: "-NxKj3...")
         val novoRef = db.child("livros").push()
         val livroComId = livro.copy(id = novoRef.key ?: "")
         novoRef.setValue(livroComId).await()
