@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
 
             if (matricula.isEmpty() || senha.isEmpty()) return@setOnClickListener toast("Preencha tudo")
 
-            // 1. Busca usuário pela matrícula
+          
             db.orderByChild("matricula").equalTo(matricula).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.children.firstOrNull() ?: return toast("Usuário não encontrado")
@@ -33,10 +33,10 @@ class LoginActivity : AppCompatActivity() {
                     val email = user.child("email").getValue(String::class.java) ?: ""
                     val isAdmin = user.child("admin").getValue(Boolean::class.java) ?: false
 
-                    // 2. Bloqueia Admin nesta tela
+               
                     if (isAdmin) return toast("Use o login de administrador")
 
-                    // 3. Autentica
+                   
                     auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             startActivity(Intent(this@LoginActivity, LibraryHomeActivity::class.java))
