@@ -4,32 +4,66 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import kotlinx.coroutines.launch
 
 class DetalhesLivroActivity : AppCompatActivity() {
+
+    private val repositorioLivros = RepositorioLivros()
+    private var livroId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detalhes_livro)
 
-        val ivDeleteDetailed = findViewById<ImageView>(R.id.ivDeleteDetailed)
-        ivDeleteDetailed.setOnClickListener {
+        livroId = intent.getStringExtra("LIVRO_ID")
+
+        if (livroId != null) {
+            carregarDetalhesDoLivro(livroId!!)
+        }
+
+        findViewById<ImageView>(R.id.ivDeleteDetailed).setOnClickListener {
             showDeleteConfirmationDialog()
         }
 
-        val btnDetails = findViewById<Button>(R.id.btnDetails)
-        btnDetails.setOnClickListener {
+        findViewById<Button>(R.id.btnDetails).setOnClickListener {
             showBookInfoDialog()
         }
 
-        val btnEvaluate = findViewById<Button>(R.id.btnEvaluate)
-        btnEvaluate.setOnClickListener {
+        findViewById<Button>(R.id.btnEvaluate).setOnClickListener {
             showBookEvaluationDialog()
         }
 
-        val ivClose = findViewById<ImageView>(R.id.ivClose)
-        ivClose.setOnClickListener {
+        findViewById<ImageView>(R.id.ivClose).setOnClickListener {
             finish()
+        }
+    }
+
+    private fun carregarDetalhesDoLivro(id: String) {
+        lifecycleScope.launch {
+            try {
+                val livro = repositorioLivros.obterLivro(id)
+                if (livro != null) {
+                    findViewById<TextView>(R.id.tvBookTitleDetailed).text = livro.titulo
+                    
+                    // Fix: Directly find the ImageView by its ID from the layout.
+                    // The error was caused by incorrectly casting CardView to ImageView and calling getChildAt().
+                    val ivCover = findViewById<ImageView>(R.id.ivBookCoverDetails)
+                    
+                    ivCover?.let {
+                        Glide.with(this@DetalhesLivroActivity)
+                            .load(livro.capUrl)
+                            .placeholder(R.drawable.noite_na_taverna)
+                            .into(it)
+                    }
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@DetalhesLivroActivity, "Erro ao carregar livro", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -37,18 +71,14 @@ class DetalhesLivroActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_confirm_delete)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        val btnCancel = dialog.findViewById<Button>(R.id.btnCancelDelete)
-        val btnConfirm = dialog.findViewById<Button>(R.id.btnConfirmDelete)
-
-        btnCancel.setOnClickListener {
-            dialog.dismiss()
+        dialog.findViewById<Button>(R.id.btnCancelDelete).setOnClickListener { dialog.dismiss() }
+        dialog.findViewById<Button>(R.id.btnConfirmDelete).setOnClickListener {
+            lifecycleScope.launch {
+                livroId?.let { repositorioLivros.removerLivro(it) }
+                dialog.dismiss()
+                finish()
+            }
         }
-
-        btnConfirm.setOnClickListener {
-            dialog.dismiss()
-        }
-
         dialog.show()
     }
 
@@ -56,12 +86,7 @@ class DetalhesLivroActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_book_info)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        val btnClose = dialog.findViewById<ImageView>(R.id.btnCloseInfo)
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
+        dialog.findViewById<ImageView>(R.id.btnCloseInfo).setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
@@ -69,19 +94,8 @@ class DetalhesLivroActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_book_evaluation)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        val btnClose = dialog.findViewById<ImageView>(R.id.btnCloseEval)
-        val btnSubmit = dialog.findViewById<Button>(R.id.btnSubmitEval)
-
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        btnSubmit.setOnClickListener {
-            // Lógica para salvar a avaliação
-            dialog.dismiss()
-        }
-
+        dialog.findViewById<ImageView>(R.id.btnCloseEval).setOnClickListener { dialog.dismiss() }
+        dialog.findViewById<Button>(R.id.btnSubmitEval).setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 }

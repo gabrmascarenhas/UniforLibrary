@@ -47,6 +47,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/ivBookCoverAvaliacoes"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -81,6 +82,7 @@
                 app:layout_constraintTop_toTopOf="@id/cardBookAvaliacoes">
 
                 <TextView
+                    android:id="@+id/tvBookTitleAvaliacoes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -90,6 +92,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvBookAuthorAvaliacoes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -98,6 +101,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tvBookPublisherAvaliacoes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -120,6 +124,7 @@
                         android:contentDescription="Estrela" />
 
                     <TextView
+                        android:id="@+id/tvBookRatingAvaliacoes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"

@@ -37,4 +37,9 @@ class RepositorioLivros {
         val snapshot = db.child("livros").get().await()
         return snapshot.children.mapNotNull { it.getValue(Livro::class.java) }
     }
+
+    suspend fun obterLivro(id: String): Livro? {
+        val snapshot = db.child("livros").child(id).get().await()
+        return snapshot.getValue(Livro::class.java)
+    }
 }
