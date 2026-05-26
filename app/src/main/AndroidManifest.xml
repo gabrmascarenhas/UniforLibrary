@@ -29,10 +29,8 @@
         <activity android:name=".perfiladm" android:exported="false" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".perfiluser" android:exported="false" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <activity android:name=".TelaInicial" android:exported="true" />
-
         <activity
-            android:name=".CadastroLivroActivity"
+            android:name=".TelaInicial"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +38,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".CadastroLivroActivity" android:exported="false" />
         <activity android:name=".requisitarlivro" android:exported="false" />
         <activity android:name=".RequisitarLivroCustodioActivity" android:exported="false" />
         <activity android:name=".LojaCustodioPontosActivity" android:exported="false" />
