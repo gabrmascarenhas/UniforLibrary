@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="enter_new_password">Digite sua nova senha:</string>
+    <string name="confirm_new_password">Confirme sua nova senha:</string>
+    <string name="confirm_new_password_button">Confirmar nova senha</string>
+    <string name="event_semana_livro_label">Dia 9 a 13: </string>
+    <string name="event_semana_livro_name">Semana do Livro na Unifor</string>
+    <string name="event_entrega_livro_label">Dia 18: </string>
+    <string name="event_entrega_livro_name">Entre do livro: “Crime e Castigo”</string>
+    <string name="btn_voltar">Voltar</string>
+    <string name="entrar">Entrar</string>
+</resources>

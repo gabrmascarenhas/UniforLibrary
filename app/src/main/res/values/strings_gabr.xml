@@ -1,0 +1,9 @@
+<resources>
+        <string name="matricula">Matrícula</string>
+    <string name="email">Email</string>
+    <string name="telefone">Telefone</string>
+    <string name="centro">Qual o seu centro?</string>
+    <string name="criar_conta">Criar conta</string>
+    <string name="unifor">Unifor</string>
+    <string name="library">Library</string>
+</resources>

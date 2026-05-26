@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout_inicial"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#211D1D"
+    tools:context="com.example.uniforlibraryteladecriarconta.TelaInicial">
+
+    <ImageView
+        android:id="@+id/imageViewLogoBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="33"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="-16dp"
+        app:srcCompat="@drawable/unifor_logo01" />
+
+    <LinearLayout
+        android:id="@+id/layoutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.46">
+
+        <TextView
+            android:id="@+id/textViewUniforPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@string/unifor"
+            android:textColor="#FDFDFD"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewLibraryPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@string/library"
+            android:textColor="#FDFDFD"
+            android:textSize="32sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonFinishAction"
+        android:layout_width="351dp"
+        android:layout_height="49dp"
+        android:backgroundTint="#0437DC"
+        android:text="@string/entrar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.945" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

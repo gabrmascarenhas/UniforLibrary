@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyApplication">
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".LoginAdminActivity" android:exported="false" />
+        <activity android:name=".LoginErrorPasswordActivity" android:exported="false" />
+        <activity android:name=".LoginErrorUserActivity" android:exported="false" />
+        <activity android:name=".SignupSuccessActivity" android:exported="false" />
+        <activity android:name=".DetalhesLivroActivity" android:exported="false" />
+        <activity android:name=".ReviewsActivity" android:exported="false" />
+        <activity android:name=".LibraryHomeActivity" android:exported="false" />
+        <activity android:name=".ChatBoxActivity" android:exported="false" />
+        <activity android:name=".TelasGabrActivity" android:exported="false" />
+        <activity android:name=".CriarContaActivity" android:exported="false" />
+        <activity android:name=".RequisitarLivroActivity" android:exported="false" />
+        <activity android:name=".CalendarMainActivity" android:exported="false" />
+        <activity android:name=".CalendarActivity" android:exported="false" />
+        <activity android:name=".perfiladm" android:exported="false" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".perfiluser" android:exported="false" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity android:name=".TelaInicial" android:exported="true" />
+
+        <activity
+            android:name=".CadastroLivroActivity"
+            android:exported="false" />
+
+        <activity android:name=".requisitarlivro" android:exported="false" />
+        <activity android:name=".RequisitarLivroCustodioActivity" android:exported="false" />
+
+        <activity
+            android:name=".LojaCustodioPontosActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".TelaLojaCustodioActivity"
+            android:exported="false" />
+
+        <activity android:name=".ResetPasswordActivity" android:exported="false" />
+        <activity android:name=".AvaliacoesDetalhesActivity" android:exported="false" />
+        <activity android:name=".AvaliarUsuariosActivity" android:exported="false" />
+        <activity android:name=".ListaResenhasActivity" android:exported="false" />
+
+    </application>
+
+</manifest>

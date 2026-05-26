@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "393863129440",
+    "project_id": "uniforlibrary-30c5c",
+    "storage_bucket": "uniforlibrary-30c5c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393863129440:android:e9b8ade064d25e99d21605",
+        "android_client_info": {
+          "package_name": "com.example.chatbox"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmgr9Pta9-LMUrc6MLqABRscyU4s6O_is"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

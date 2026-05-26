@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+            <color name="blue_header">#004BFF</color>
+    <color name="background_dark">#121212</color>
+    <color name="card_background">#1E1E1E</color>
+    <color name="text_grey">#CCCCCC</color>
+    <color name="delete_red">#FF0000</color>
+    <color name="star_yellow">#FFD700</color>
+</resources>
