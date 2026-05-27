@@ -43,6 +43,7 @@
         <activity android:name=".LojaCustodioPontosActivity" android:exported="false" />
         <activity android:name=".TelaLojaCustodioActivity" android:exported="false" />
         <activity android:name=".ResetPasswordActivity" android:exported="false" />
+        <activity android:name=".ForgotPasswordActivity" android:exported="false" />
         <activity android:name=".AvaliacoesDetalhesActivity" android:exported="false" />
         <activity android:name=".AvaliarUsuariosActivity" android:exported="false" />
         <activity android:name=".ListaResenhasActivity" android:exported="false" />

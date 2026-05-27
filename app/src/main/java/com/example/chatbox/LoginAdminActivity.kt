@@ -52,7 +52,7 @@ class LoginAdminActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
-        findViewById<TextView>(R.id.tvForgotPassword).setOnClickListener { startActivity(Intent(this, CalendarMainActivity::class.java)) }
+        findViewById<TextView>(R.id.tvForgotPassword).setOnClickListener { startActivity(Intent(this, ForgotPasswordActivity::class.java)) }
         findViewById<TextView>(R.id.tvCreateAccount).setOnClickListener { startActivity(Intent(this, TelasGabrActivity::class.java)) }
     }
 
