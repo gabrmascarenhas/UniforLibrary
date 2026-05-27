@@ -49,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.tvCreateAccount).setOnClickListener { startActivity(Intent(this, CriarContaActivity::class.java)) }
+        findViewById<TextView>(R.id.tvForgotPassword).setOnClickListener { startActivity(Intent(this, ForgotPasswordActivity::class.java)) }
         findViewById<Button>(R.id.btnAdmin).setOnClickListener { startActivity(Intent(this, LoginAdminActivity::class.java)) }
     }
 
