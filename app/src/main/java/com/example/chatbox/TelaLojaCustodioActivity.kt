@@ -109,8 +109,10 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
                     container.addView(emptyView)
                     return@launch
                 }
+
+                val itensOrdenados = itens.sortedByDescending { it.pontos.filter { char -> char.isDigit() }.toIntOrNull() ?: 0 }
                 
-                itens.forEach { item ->
+                itensOrdenados.forEach { item ->
                     val itemView = LayoutInflater.from(this@TelaLojaCustodioActivity)
                         .inflate(R.layout.item_loja_venda, container, false)
                     
@@ -150,7 +152,7 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
         dialog.findViewById<TextView>(R.id.tvMessage)?.text = "Deseja comprar ${item.nome} por ${item.pontos}?"
 
         btnConfirm.setOnClickListener {
-            // Extrair o valor numérico da string de pontos (ex: "4000 pontos" -> 4000)
+            // subtração de pontos
             val precoItem = item.pontos.filter { it.isDigit() }.toIntOrNull() ?: 0
             
             if (pontosAtuais >= precoItem) {
@@ -182,11 +184,11 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
 
                 val userName = UserManager.userName ?: "Usuário"
                 val userMatricula = UserManager.userMatricula ?: "N/A"
-                
+
                 NotificationHelper.showNotification(
                     this@TelaLojaCustodioActivity,
-                    "Nova Compra Realizada",
-                    "Item: ${item.nome} | Usuário: $userName | Matrícula: $userMatricula"
+                    "Nova Compra Realizada, Você tem 3 dias para retirar!",
+                    "Item: ${item.nome}"
                 )
 
                 showPurchaseSuccessDialog()

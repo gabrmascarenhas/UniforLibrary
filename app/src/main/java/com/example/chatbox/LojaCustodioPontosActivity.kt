@@ -81,6 +81,9 @@ class LojaCustodioPontosActivity : AppCompatActivity() {
                         listaItens.add(itemComId)
                     }
                 }
+
+                listaItens.sortByDescending { it.pontos.filter { char -> char.isDigit() }.toIntOrNull() ?: 0 }
+
                 adapter.notifyDataSetChanged()
             }
 

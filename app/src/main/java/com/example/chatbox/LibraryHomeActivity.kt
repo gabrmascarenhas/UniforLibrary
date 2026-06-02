@@ -51,7 +51,7 @@ class LibraryHomeActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        // Lógica de "Enter" para busca definitiva
+        // aviso de inexistencia do livro
         etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = etSearch.text.toString()
@@ -124,7 +124,7 @@ class LibraryHomeActivity : AppCompatActivity() {
     }
 
     private fun mostrarResultadosBusca(query: String) {
-        val filtrados = todosOsLivros.filter { 
+        val filtrados = todosOsLivros.filter {
             it.titulo.contains(query, ignoreCase = true) 
         }
 
