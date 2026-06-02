@@ -21,7 +21,8 @@ data class Resenha(
 
 class RepositorioResenha {
 
-    private val db = Firebase.database.reference
+    // URL explicitamente definida para garantir a conexão
+    private val db = Firebase.database("https://uniforlibrary-30c5c-default-rtdb.firebaseio.com/").reference
 
     // ─── ADICIONAR RESENHA ───────────────────────────────────────────
     suspend fun adicionarResenha(resenha: Resenha) {

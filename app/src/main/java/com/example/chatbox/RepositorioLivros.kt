@@ -14,7 +14,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 class RepositorioLivros {
-    private val db = Firebase.database.reference
+    // URL explicitamente definida para garantir a conexão
+    private val db = Firebase.database("https://uniforlibrary-30c5c-default-rtdb.firebaseio.com/").reference
     private val storage = Firebase.storage.reference
 
     suspend fun uploadArquivo(uri: Uri, pasta: String): String {

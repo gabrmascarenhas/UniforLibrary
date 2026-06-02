@@ -10,7 +10,9 @@ import com.google.firebase.database.*
 class LoginActivity : AppCompatActivity() {
 
     private val auth by lazy { FirebaseAuth.getInstance() }
-    private val db by lazy { FirebaseDatabase.getInstance().getReference("users") }
+    // URL explicitamente definida para garantir a conexão
+    private val databaseUrl = "https://uniforlibrary-30c5c-default-rtdb.firebaseio.com/"
+    private val db by lazy { FirebaseDatabase.getInstance(databaseUrl).getReference("users") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +27,6 @@ class LoginActivity : AppCompatActivity() {
 
             if (matricula.isEmpty() || senha.isEmpty()) return@setOnClickListener toast("Preencha tudo")
 
-            // 1. Busca usuário pela matrícula
             db.orderByChild("matricula").equalTo(matricula).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.children.firstOrNull() ?: return toast("Usuário não encontrado")
@@ -33,18 +34,16 @@ class LoginActivity : AppCompatActivity() {
                     val email = user.child("email").getValue(String::class.java) ?: ""
                     val isAdmin = user.child("admin").getValue(Boolean::class.java) ?: false
 
-                    // 2. Bloqueia Admin nesta tela
                     if (isAdmin) return toast("Use o login de administrador")
 
-                    // 3. Autentica
                     auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             startActivity(Intent(this@LoginActivity, LibraryHomeActivity::class.java))
                             finish()
-                        } else toast("Senha incorreta")
+                        } else toast("Senha incorreta ou erro de conexão: ${task.exception?.message}")
                     }
                 }
-                override fun onCancelled(error: DatabaseError) = toast(error.message)
+                override fun onCancelled(error: DatabaseError) = toast("Erro Firebase: ${error.message}")
             })
         }
 

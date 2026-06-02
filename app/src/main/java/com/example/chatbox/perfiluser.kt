@@ -2,8 +2,10 @@ package com.example.chatbox
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,7 +18,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class perfiluser : AppCompatActivity() {
-    private val db = Firebase.database.reference
+    // Definindo a URL explicitamente para garantir a conexão
+    private val databaseUrl = "https://uniforlibrary-30c5c-default-rtdb.firebaseio.com/"
+    private val db = Firebase.database(databaseUrl).reference
     private val auth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,32 +28,32 @@ class perfiluser : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_perfiluser)
 
-        findViewById<View>(R.id.nav_unishop)?.setOnClickListener {
-            val intent = Intent(this, TelaLojaCustodioActivity::class.java)
-            startActivity(intent)
-        }
-
-        findViewById<View>(R.id.nav_reviews)?.setOnClickListener {
-            val intent = Intent(this, ReviewsActivity::class.java)
-            startActivity(intent)
-        }
-
-        findViewById<View>(R.id.nav_home)?.setOnClickListener {
-            finish() // Volta para a Home
-        }
-
-        findViewById<View>(R.id.nav_datas_user)?.setOnClickListener {
-            val intent = Intent(this, CalendarActivity::class.java)
-            startActivity(intent)
-        }
+        setupNavigation()
+        carregarPontos()
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
 
-        carregarPontos()
+    private fun setupNavigation() {
+        findViewById<View>(R.id.nav_unishop)?.setOnClickListener {
+            startActivity(Intent(this, TelaLojaCustodioActivity::class.java))
+        }
+
+        findViewById<View>(R.id.nav_reviews)?.setOnClickListener {
+            startActivity(Intent(this, ReviewsActivity::class.java))
+        }
+
+        findViewById<View>(R.id.nav_home)?.setOnClickListener {
+            finish()
+        }
+
+        findViewById<View>(R.id.nav_datas_user)?.setOnClickListener {
+            startActivity(Intent(this, CalendarActivity::class.java))
+        }
     }
 
     private fun carregarPontos() {
@@ -62,7 +66,10 @@ class perfiluser : AppCompatActivity() {
                 val pontos = snapshot.getValue(Int::class.java) ?: 0
                 tvPontos.text = "Sua pontuação total:\n$pontos pontos!"
             } catch (e: Exception) {
+                Log.e("FirebasePerfil", "Erro ao carregar pontos", e)
                 tvPontos.text = "Sua pontuação total:\n0 pontos!"
+                // Mostrar erro detalhado para diagnóstico
+                Toast.makeText(this@perfiluser, "Erro de conexão: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }

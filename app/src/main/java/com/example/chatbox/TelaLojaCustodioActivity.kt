@@ -29,7 +29,10 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
 
     private val REQUEST_NOTIFICATION_PERMISSION = 1001
     private val repositorioLoja = RepositorioLoja()
-    private val db = Firebase.database.reference
+    
+    // URL DEFINIDA MANUALMENTE PARA EVITAR ERRO DE CONEXÃO
+    private val databaseUrl = "https://uniforlibrary-30c5c-default-rtdb.firebaseio.com/"
+    private val db = Firebase.database(databaseUrl).reference
     private val auth = Firebase.auth
     private var pontosAtuais: Int = 0
 
@@ -40,27 +43,21 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
         NotificationHelper.createNotificationChannel(this)
         checkNotificationPermission()
 
-        findViewById<View>(R.id.nav_home_loja)?.setOnClickListener {
-            finish()
-        }
-
-        findViewById<View>(R.id.nav_perfil_loja)?.setOnClickListener {
-            val intent = Intent(this, perfiluser::class.java)
-            startActivity(intent)
-        }
-
-        findViewById<View>(R.id.nav_reviews_loja)?.setOnClickListener {
-            val intent = Intent(this, ReviewsActivity::class.java)
-            startActivity(intent)
-        }
-
-        findViewById<View>(R.id.nav_data_loja)?.setOnClickListener {
-            val intent = Intent(this, CalendarActivity::class.java)
-            startActivity(intent)
-        }
-
-        // Carregar pontos do usuário e itens da loja
+        setupNavigation()
         carregarDadosIniciais()
+    }
+
+    private fun setupNavigation() {
+        findViewById<View>(R.id.nav_home_loja)?.setOnClickListener { finish() }
+        findViewById<View>(R.id.nav_perfil_loja)?.setOnClickListener {
+            startActivity(Intent(this, perfiluser::class.java))
+        }
+        findViewById<View>(R.id.nav_reviews_loja)?.setOnClickListener {
+            startActivity(Intent(this, ReviewsActivity::class.java))
+        }
+        findViewById<View>(R.id.nav_data_loja)?.setOnClickListener {
+            startActivity(Intent(this, CalendarActivity::class.java))
+        }
     }
 
     private fun carregarDadosIniciais() {
@@ -69,18 +66,14 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
     }
 
     private fun carregarPontosDoUsuario() {
-        val tvPontosValor = findViewById<TextView>(R.id.tvPontosValor)
-        val tvPontosHeader = findViewById<TextView>(R.id.tvPontosHeader)
         val userId = auth.currentUser?.uid ?: return
-
         lifecycleScope.launch {
             try {
                 val snapshot = db.child("users").child(userId).child("pontos").get().await()
                 pontosAtuais = snapshot.getValue(Int::class.java) ?: 0
                 atualizarExibicaoPontos(pontosAtuais)
             } catch (e: Exception) {
-                pontosAtuais = 0
-                atualizarExibicaoPontos(0)
+                Toast.makeText(this@TelaLojaCustodioActivity, "Erro ao carregar pontos: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -92,25 +85,26 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
 
     private fun carregarItensDaLoja() {
         val container = findViewById<LinearLayout>(R.id.containerItens)
-        
         lifecycleScope.launch {
             try {
                 val itens = repositorioLoja.obterItens()
-                
                 container.removeAllViews()
                 
                 if (itens.isEmpty()) {
                     val emptyView = TextView(this@TelaLojaCustodioActivity).apply {
-                        text = "Nenhum item disponível na loja no momento."
+                        text = "Nenhum item disponível."
                         setTextColor(Color.WHITE)
-                        setPadding(0, 50, 0, 0)
                         gravity = android.view.Gravity.CENTER
+                        setPadding(0, 50, 0, 0)
                     }
                     container.addView(emptyView)
                     return@launch
                 }
 
-                val itensOrdenados = itens.sortedByDescending { it.pontos.filter { char -> char.isDigit() }.toIntOrNull() ?: 0 }
+                // Ordem Decrescente
+                val itensOrdenados = itens.sortedByDescending { 
+                    it.pontos.filter { char -> char.isDigit() }.toIntOrNull() ?: 0 
+                }
                 
                 itensOrdenados.forEach { item ->
                     val itemView = LayoutInflater.from(this@TelaLojaCustodioActivity)
@@ -118,15 +112,12 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
                     
                     val btnItem = itemView.findViewById<Button>(R.id.btnItemLoja)
                     btnItem.text = "${item.nome} - ${item.pontos}"
-                    
-                    btnItem.setOnClickListener {
-                        showPurchaseConfirmationDialog(item)
-                    }
+                    btnItem.setOnClickListener { showPurchaseConfirmationDialog(item) }
                     
                     container.addView(itemView)
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@TelaLojaCustodioActivity, "Erro ao carregar loja: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@TelaLojaCustodioActivity, "Erro ao carregar itens: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -144,29 +135,19 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_confirm_purchase)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val btnConfirm = dialog.findViewById<Button>(R.id.btnConfirm)
-        val btnClose = dialog.findViewById<ImageView>(R.id.btnClose)
-        val tvTitle = dialog.findViewById<TextView>(R.id.tvTitle)
-        
-        tvTitle?.text = "Confirmar compra?"
+        dialog.findViewById<TextView>(R.id.tvTitle)?.text = "Confirmar compra?"
         dialog.findViewById<TextView>(R.id.tvMessage)?.text = "Deseja comprar ${item.nome} por ${item.pontos}?"
 
-        btnConfirm.setOnClickListener {
-            // subtração de pontos
+        dialog.findViewById<Button>(R.id.btnConfirm).setOnClickListener {
             val precoItem = item.pontos.filter { it.isDigit() }.toIntOrNull() ?: 0
-            
             if (pontosAtuais >= precoItem) {
                 efetuarCompra(item, precoItem)
                 dialog.dismiss()
             } else {
-                Toast.makeText(this, "Pontos insuficientes!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Saldo insuficiente!", Toast.LENGTH_SHORT).show()
             }
         }
-
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
+        dialog.findViewById<ImageView>(R.id.btnClose).setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
@@ -177,23 +158,17 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 db.child("users").child(userId).child("pontos").setValue(novosPontos).await()
-                
-                // Atualizar UI local
                 pontosAtuais = novosPontos
                 atualizarExibicaoPontos(pontosAtuais)
 
-                val userName = UserManager.userName ?: "Usuário"
-                val userMatricula = UserManager.userMatricula ?: "N/A"
-
                 NotificationHelper.showNotification(
                     this@TelaLojaCustodioActivity,
-                    "Nova Compra Realizada, Você tem 3 dias para retirar!",
-                    "Item: ${item.nome}"
+                    "Compra Realizada!",
+                    "Você comprou ${item.nome}. Retire em até 3 dias!"
                 )
-
                 showPurchaseSuccessDialog()
             } catch (e: Exception) {
-                Toast.makeText(this@TelaLojaCustodioActivity, "Erro ao processar compra", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@TelaLojaCustodioActivity, "Falha na transação: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -202,13 +177,7 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_purchase_success)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val btnClose = dialog.findViewById<ImageView>(R.id.btnCloseSuccess)
-
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
+        dialog.findViewById<ImageView>(R.id.btnCloseSuccess).setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 }

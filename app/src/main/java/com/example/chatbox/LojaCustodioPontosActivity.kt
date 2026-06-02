@@ -2,6 +2,7 @@ package com.example.chatbox
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +16,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 
 class LojaCustodioPontosActivity : AppCompatActivity() {
-    private val db = Firebase.database.reference
+    
+    // URL padronizada (removida a barra final para evitar erros de permissão)
+    private val databaseUrl = "https://uniforlibrary-30c5c-default-rtdb.firebaseio.com"
+    private val db = Firebase.database(databaseUrl).reference
+    private val auth = Firebase.auth
     private lateinit var adapter: PontosAdapterCustodio
     private val listaItens = mutableListOf<PontoItemCustodio>()
 
@@ -30,30 +36,7 @@ class LojaCustodioPontosActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_loja_custodio_pontos)
 
-        // Configurar Navegação Inferior (Admin)
-        findViewById<View>(R.id.nav_home_pontos)?.setOnClickListener {
-            val intent = Intent(this, LibraryHomeActivity::class.java)
-            intent.putExtra("IS_ADMIN", true)
-            startActivity(intent)
-            finish()
-        }
-
-        findViewById<View>(R.id.nav_perfil_pontos)?.setOnClickListener {
-            val intent = Intent(this, perfiladm::class.java)
-            startActivity(intent)
-        }
-
-        findViewById<View>(R.id.nav_reviews_pontos)?.setOnClickListener {
-            val intent = Intent(this, ReviewsActivity::class.java)
-            intent.putExtra("IS_ADMIN", true)
-            startActivity(intent)
-        }
-
-        findViewById<View>(R.id.nav_datas_pontos)?.setOnClickListener {
-            val intent = Intent(this, CalendarActivity::class.java)
-            intent.putExtra("IS_ADMIN", true)
-            startActivity(intent)
-        }
+        setupNavigation()
 
         findViewById<View>(R.id.btn_adicionar)?.setOnClickListener {
             showAdicionarItemDialog()
@@ -66,29 +49,56 @@ class LojaCustodioPontosActivity : AppCompatActivity() {
         }
         rv.adapter = adapter
 
-        carregarItensDoFirebase()
+        // Verificar se o usuário está logado antes de carregar
+        if (auth.currentUser == null) {
+            Toast.makeText(this, "Usuário não autenticado", Toast.LENGTH_SHORT).show()
+        } else {
+            carregarItensDoFirebase()
+        }
+    }
+
+    private fun setupNavigation() {
+        findViewById<View>(R.id.nav_home_pontos)?.setOnClickListener {
+            val intent = Intent(this, LibraryHomeActivity::class.java)
+            intent.putExtra("IS_ADMIN", true)
+            startActivity(intent)
+            finish()
+        }
+        findViewById<View>(R.id.nav_perfil_pontos)?.setOnClickListener {
+            startActivity(Intent(this, perfiladm::class.java))
+        }
+        findViewById<View>(R.id.nav_reviews_pontos)?.setOnClickListener {
+            val intent = Intent(this, ReviewsActivity::class.java)
+            intent.putExtra("IS_ADMIN", true)
+            startActivity(intent)
+        }
+        findViewById<View>(R.id.nav_datas_pontos)?.setOnClickListener {
+            val intent = Intent(this, CalendarActivity::class.java)
+            intent.putExtra("IS_ADMIN", true)
+            startActivity(intent)
+        }
     }
 
     private fun carregarItensDoFirebase() {
-        db.child("itensLoja").addValueEventListener(object : ValueEventListener {
+        // Garantindo que o caminho 'loja' bata com a regra do Firebase
+        db.child("loja").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 listaItens.clear()
                 for (postSnapshot in snapshot.children) {
                     val item = postSnapshot.getValue(PontoItemCustodio::class.java)
                     if (item != null) {
-                        // Garantir que o ID do Firebase seja atribuído ao objeto
                         val itemComId = item.copy(id = postSnapshot.key ?: "")
                         listaItens.add(itemComId)
                     }
                 }
-
                 listaItens.sortByDescending { it.pontos.filter { char -> char.isDigit() }.toIntOrNull() ?: 0 }
-
                 adapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@LojaCustodioPontosActivity, "Erro ao carregar itens", Toast.LENGTH_SHORT).show()
+                // Aqui aparecerá a mensagem real se a regra falhar
+                Toast.makeText(this@LojaCustodioPontosActivity, "Falha: ${error.message}", Toast.LENGTH_LONG).show()
+                Log.e("FirebaseLoja", "Erro de permissão ou conexão: ${error.message}")
             }
         })
     }
@@ -114,31 +124,28 @@ class LojaCustodioPontosActivity : AppCompatActivity() {
     }
 
     private fun salvarItemNoFirebase(nome: String, pontos: String) {
-        val id = db.child("itensLoja").push().key ?: return
+        val id = db.child("loja").push().key ?: return
         val item = PontoItemCustodio(id, nome, pontos)
-        db.child("itensLoja").child(id).setValue(item)
+        db.child("loja").child(id).setValue(item)
             .addOnSuccessListener {
-                Toast.makeText(this, "Item salvo no banco de dados com sucesso!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Item salvo!", Toast.LENGTH_SHORT).show()
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Erro ao salvar item", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Erro ao salvar (Verifique se é Admin nas Regras): ${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 
     private fun deletarItemDoFirebase(id: String) {
         if (id.isEmpty()) return
-
-        db.child("itensLoja").child(id).removeValue()
+        db.child("loja").child(id).removeValue()
             .addOnSuccessListener {
-                Toast.makeText(this, "Item removido com sucesso!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Item removido!", Toast.LENGTH_SHORT).show()
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Erro ao remover item", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Erro ao remover: ${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 }
-
-data class PontoItemCustodio(val id: String = "", val nome: String = "", val pontos: String = "")
 
 class PontosAdapterCustodio(
     private val lista: List<PontoItemCustodio>,
@@ -160,9 +167,7 @@ class PontosAdapterCustodio(
         val item = lista[position]
         holder.nome.text = item.nome
         holder.pontos.text = item.pontos
-        holder.btnDelete.setOnClickListener {
-            onDeleteClick(item)
-        }
+        holder.btnDelete.setOnClickListener { onDeleteClick(item) }
     }
 
     override fun getItemCount() = lista.size

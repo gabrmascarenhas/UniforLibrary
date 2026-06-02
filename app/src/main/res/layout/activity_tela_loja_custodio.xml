@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="3059 pontos!"
+        android:text="0 pontos!"
         android:textColor="#BBBBBB"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tvPontuacaoLabel"
