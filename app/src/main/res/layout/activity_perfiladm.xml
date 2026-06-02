@@ -9,6 +9,18 @@
     tools:context=".perfiladm">
 
     <ImageView
+        android:id="@+id/btnNotificationsAdm"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_info_outline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#FFFFFF" />
+
+    <ImageView
         android:id="@+id/imageView5"
         android:layout_width="76dp"
         android:layout_height="72dp"
@@ -128,7 +140,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:backgroundTint="#0437DC"
-        android:text="Adicionar Livros"
+        android:text="Gerenciar Livros"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />

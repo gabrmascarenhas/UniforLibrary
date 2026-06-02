@@ -1,5 +1,7 @@
 package com.example.chatbox
 
+import java.io.Serializable
+
 data class Livro(
     val id: String = "",
     val titulo: String = "",
@@ -9,4 +11,4 @@ data class Livro(
     val sinopse: String = "",
     val capUrl: String = "",
     val pdfUrl: String = ""
-)
+) : Serializable

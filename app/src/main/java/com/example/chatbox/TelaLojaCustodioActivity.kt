@@ -1,34 +1,20 @@
 package com.example.chatbox
 
-import android.Manifest
 import android.app.Dialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
 class TelaLojaCustodioActivity : AppCompatActivity() {
-
-    private val REQUEST_NOTIFICATION_PERMISSION = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tela_loja_custodio)
-
-        // Criar o canal de notificação
-        NotificationHelper.createNotificationChannel(this)
-        
-        // Pedir permissão no Android 13+
-        checkNotificationPermission()
 
         // Botão Home na Bottom Nav da Loja
         findViewById<View>(R.id.nav_home_loja)?.setOnClickListener {
@@ -50,14 +36,6 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
         }
 
         setupStoreItems()
-    }
-
-    private fun checkNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATION_PERMISSION)
-            }
-        }
     }
 
     private fun setupStoreItems() {
@@ -88,16 +66,6 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
         btnConfirm.setOnClickListener {
             dialog.dismiss()
             
-            val userName = UserManager.userName ?: "Usuário"
-            val userMatricula = UserManager.userMatricula ?: "N/A"
-            
-            // Disparar a notificação
-            NotificationHelper.showNotification(
-                this,
-                "Nova Compra Realizada",
-                "Usuário: $userName | Matrícula: $userMatricula"
-            )
-
             showPurchaseSuccessDialog()
         }
 

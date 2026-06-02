@@ -5,25 +5,35 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 
 class LibraryHomeActivity : AppCompatActivity() {
+
+    private val repositorio = RepositorioLivros()
+    private lateinit var adapter: HomeLivroAdapter
+    private lateinit var rvLivros: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_library_home)
 
-        // Configurar clique no ícone de perfil do topo (círculo)
-        val profileIconTop = findViewById<View>(R.id.circleProfile)
-        profileIconTop.setOnClickListener {
-            openProfile()
+        rvLivros = findViewById(R.id.rvLivrosHome)
+        rvLivros.layoutManager = GridLayoutManager(this, 3)
+        adapter = HomeLivroAdapter(mutableListOf<Livro>()) { livro: Livro ->
+            showAccessBookDialog(livro)
         }
+        rvLivros.adapter = adapter
+
+        // Configurar clique no ícone de perfil do topo (círculo)
+        findViewById<View>(R.id.circleProfile).setOnClickListener { openProfile() }
 
         // Configurar clique no ícone de perfil da Bottom Nav
-        val profileIconBottom = findViewById<View>(R.id.nav_perfil_home)
-        profileIconBottom.setOnClickListener {
-            openProfile()
-        }
+        findViewById<View>(R.id.nav_perfil_home).setOnClickListener { openProfile() }
 
         // Configurar clique no UniShop
         findViewById<View>(R.id.nav_unishop_home)?.setOnClickListener {
@@ -44,8 +54,7 @@ class LibraryHomeActivity : AppCompatActivity() {
         }
 
         // Configurar clique no ícone do Terminal (Brackets)
-        val terminalIcon = findViewById<View>(R.id.circleTerminal)
-        terminalIcon.setOnClickListener {
+        findViewById<View>(R.id.circleTerminal).setOnClickListener {
             val intent = Intent(this, ChatBoxActivity::class.java)
             startActivity(intent)
         }
@@ -56,23 +65,21 @@ class LibraryHomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Lista de IDs dos FrameLayouts dos livros no XML
-        val bookIds = listOf(
-            R.id.book_norma, R.id.book_legado, R.id.book_sobotta,
-            R.id.book_sentido, R.id.book_red_center, R.id.book_crime,
-            R.id.book_noite_taverna, R.id.book_jazz, R.id.book_lines,
-            R.id.book_expressionismo, R.id.book_teologia, R.id.book_dadaismo
-        )
+        carregarLivros()
+    }
 
-        // Configurar o clique para cada livro
-        bookIds.forEach { id ->
-            findViewById<View>(id)?.setOnClickListener {
-                if (id == R.id.book_noite_taverna) {
-                    val intent = Intent(this, AvaliacoesDetalhesActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    showAccessBookDialog()
-                }
+    override fun onResume() {
+        super.onResume()
+        carregarLivros()
+    }
+
+    private fun carregarLivros() {
+        lifecycleScope.launch {
+            try {
+                val livros = repositorio.listarLivros()
+                adapter.updateList(livros)
+            } catch (e: Exception) {
+                Toast.makeText(this@LibraryHomeActivity, "Erro ao carregar catálogo: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -88,7 +95,7 @@ class LibraryHomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun showAccessBookDialog() {
+    private fun showAccessBookDialog(livro: Livro) {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_access_book)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -98,6 +105,7 @@ class LibraryHomeActivity : AppCompatActivity() {
 
         btnYes.setOnClickListener {
             val intent = Intent(this, DetalhesLivroActivity::class.java)
+            intent.putExtra("LIVRO_ID", livro.id)
             startActivity(intent)
             dialog.dismiss()
         }

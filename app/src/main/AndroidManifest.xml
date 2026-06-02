@@ -38,6 +38,7 @@
         </activity>
 
         <activity android:name=".CadastroLivroActivity" android:exported="false" />
+        <activity android:name=".GerenciarLivrosActivity" android:exported="false" />
         <activity android:name=".requisitarlivro" android:exported="false" />
         <activity android:name=".RequisitarLivroCustodioActivity" android:exported="false" />
         <activity android:name=".LojaCustodioPontosActivity" android:exported="false" />
