@@ -31,4 +31,20 @@ class RepositorioLivros {
     suspend fun removerLivro(livroId: String) {
         db.child("livros").child(livroId).removeValue().await()
     }
+
+    suspend fun atualizarAvaliacao(livroId: String, novaAvaliacao: Float) {
+        db.child("livros").child(livroId).child("avaliacao").setValue(novaAvaliacao).await()
+    }
+
+    suspend fun listarLivros(): List<Livro> = suspendCancellableCoroutine { cont ->
+        db.child("livros").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val lista = snapshot.children.mapNotNull { it.getValue(Livro::class.java) }
+                cont.resume(lista)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                cont.resumeWithException(error.toException())
+            }
+        })
+    }
 }

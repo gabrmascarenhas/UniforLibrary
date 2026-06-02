@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="#2C2C2C"
+    app:cardCornerRadius="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/ivCapaLivro"
+            android:layout_width="60dp"
+            android:layout_height="90dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unifor_logo01"
+            android:contentDescription="Capa do livro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTituloLivro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Título do Livro"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivCapaLivro"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAutorLivro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:text="Autor do Livro"
+            android:textColor="#BBBBBB"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivCapaLivro"
+            app:layout_constraintTop_toBottomOf="@id/tvTituloLivro" />
+
+        <RatingBar
+            android:id="@+id/rbAvaliacao"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:progressTint="#FFD700"
+            app:layout_constraintStart_toEndOf="@id/ivCapaLivro"
+            app:layout_constraintTop_toBottomOf="@id/tvAutorLivro" />
+
+        <TextView
+            android:id="@+id/tvNota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="0.0"
+            android:textColor="#FFD700"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/rbAvaliacao"
+            app:layout_constraintStart_toEndOf="@id/rbAvaliacao"
+            app:layout_constraintTop_toTopOf="@id/rbAvaliacao" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

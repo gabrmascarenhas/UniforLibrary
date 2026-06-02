@@ -8,5 +8,6 @@ data class Livro(
     val ano: Int = 0,
     val sinopse: String = "",
     val capUrl: String = "",
-    val pdfUrl: String = ""
+    val pdfUrl: String = "",
+    val avaliacao: Float = 0f
 )

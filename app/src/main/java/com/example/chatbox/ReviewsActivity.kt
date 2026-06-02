@@ -7,12 +7,16 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+<<<<<<< Updated upstream
 import android.widget.ImageView
 import android.widget.TextView
+=======
+>>>>>>> Stashed changes
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+<<<<<<< Updated upstream
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
@@ -24,11 +28,23 @@ class ReviewsActivity : AppCompatActivity() {
     private var allEvaluations = listOf<Map<String, Any>>()
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
+=======
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+
+class ReviewsActivity : AppCompatActivity() {
+
+    private lateinit var adapter: LivroAvaliadoAdapter
+    private val database = FirebaseDatabase.getInstance().reference
+>>>>>>> Stashed changes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reviews)
 
+<<<<<<< Updated upstream
         val etSearch = findViewById<EditText>(R.id.etSearch)
         val rvResults = findViewById<RecyclerView>(R.id.rvSearchResults)
         val gridDefault = findViewById<View>(R.id.gridBooksDefault)
@@ -58,6 +74,51 @@ class ReviewsActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
+=======
+        configurarRecyclerView()
+        configurarBusca()
+        configurarNavegacao()
+        carregarDadosFirebase()
+    }
+
+    private fun configurarRecyclerView() {
+        val rv = findViewById<RecyclerView>(R.id.rvLivrosAvaliados)
+        adapter = LivroAvaliadoAdapter(emptyList()) { livro ->
+            val intent = Intent(this, ListaResenhasActivity::class.java)
+            intent.putExtra("LIVRO_ID", livro.id)
+            startActivity(intent)
+        }
+        rv.layoutManager = LinearLayoutManager(this)
+        rv.adapter = adapter
+    }
+
+    private fun configurarBusca() {
+        val etSearch = findViewById<EditText>(R.id.etSearch)
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter.filtrar(s.toString())
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun carregarDadosFirebase() {
+        database.child("livros").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val lista = snapshot.children.mapNotNull { it.getValue(Livro::class.java) }
+                    .filter { it.avaliacao > 0 } // Requisito: Apenas livros avaliados
+                adapter.atualizarLista(lista)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@ReviewsActivity, "Erro ao carregar dados: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun configurarNavegacao() {
+>>>>>>> Stashed changes
         findViewById<View>(R.id.nav_home_reviews)?.setOnClickListener {
             finish()
         }
@@ -71,6 +132,7 @@ class ReviewsActivity : AppCompatActivity() {
             val intent = Intent(this, CalendarActivity::class.java)
             startActivity(intent)
         }
+<<<<<<< Updated upstream
 
         // Configuração dos cliques para Detalhes dos Livros
         setupBookClick(R.id.book_norma_reviews, "Teoria da Norma Jurídica", R.drawable.book_norma)
@@ -91,6 +153,8 @@ class ReviewsActivity : AppCompatActivity() {
             intent.putExtra("IS_ADMIN", true) // Forçando admin para você testar o apagar
             startActivity(intent)
         }
+=======
+>>>>>>> Stashed changes
     }
 
     private fun setupBookClick(viewId: Int, title: String, imageRes: Int) {

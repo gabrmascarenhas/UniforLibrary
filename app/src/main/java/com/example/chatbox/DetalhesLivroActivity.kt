@@ -6,18 +6,30 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+<<<<<<< Updated upstream
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+=======
+import android.widget.RatingBar
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+>>>>>>> Stashed changes
 
 class DetalhesLivroActivity : AppCompatActivity() {
+
+    private val repositorio = RepositorioLivros()
+    private var livroId: String = "livro_1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detalhes_livro)
 
+<<<<<<< Updated upstream
         val tvTitle = findViewById<TextView>(R.id.tvBookTitleDetailed)
         val ivCover = findViewById<ImageView>(R.id.ivBookCoverDetailed)
         val tvRating = findViewById<TextView>(R.id.tvRatingDetailed)
@@ -30,6 +42,9 @@ class DetalhesLivroActivity : AppCompatActivity() {
         tvTitle.text = bookTitle
         ivCover.setImageResource(bookImage)
         tvRating.text = bookRating
+=======
+        livroId = intent.getStringExtra("LIVRO_ID") ?: "livro_1"
+>>>>>>> Stashed changes
 
         val ivDeleteDetailed = findViewById<ImageView>(R.id.ivDeleteDetailed)
         ivDeleteDetailed.setOnClickListener {
@@ -91,13 +106,18 @@ class DetalhesLivroActivity : AppCompatActivity() {
 
         val btnClose = dialog.findViewById<ImageView>(R.id.btnCloseEval)
         val btnSubmit = dialog.findViewById<Button>(R.id.btnSubmitEval)
+<<<<<<< Updated upstream
         val etComment = dialog.findViewById<EditText>(R.id.etCommentEval)
+=======
+        val rbStars = dialog.findViewById<RatingBar>(R.id.rbStarsEval)
+>>>>>>> Stashed changes
 
         btnClose.setOnClickListener {
             dialog.dismiss()
         }
 
         btnSubmit.setOnClickListener {
+<<<<<<< Updated upstream
             val comment = etComment.text.toString()
             val user = FirebaseAuth.getInstance().currentUser
             val bookTitle = findViewById<TextView>(R.id.tvBookTitleDetailed).text.toString()
@@ -123,9 +143,28 @@ class DetalhesLivroActivity : AppCompatActivity() {
                     }
             } else {
                 Toast.makeText(this, "Por favor, escreva um comentário", Toast.LENGTH_SHORT).show()
+=======
+            val nota = rbStars.rating.toInt()
+            if (nota in 1..5) {
+                salvarAvaliacao(nota)
+                dialog.dismiss()
+            } else {
+                Toast.makeText(this, "Selecione uma nota entre 1 e 5", Toast.LENGTH_SHORT).show()
+>>>>>>> Stashed changes
             }
         }
 
         dialog.show()
+    }
+
+    private fun salvarAvaliacao(nota: Int) {
+        lifecycleScope.launch {
+            try {
+                repositorio.atualizarAvaliacao(livroId, nota.toFloat()) // Use Float se o modelo usar Float
+                Toast.makeText(this@DetalhesLivroActivity, "Avaliação salva com sucesso!", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(this@DetalhesLivroActivity, "Erro ao salvar: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
