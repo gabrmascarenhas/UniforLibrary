@@ -8,17 +8,7 @@
     android:background="#211D1D"
     tools:context=".perfiladm">
 
-    <ImageView
-        android:id="@+id/btnNotificationsAdm"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_info_outline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="#FFFFFF" />
+
 
     <ImageView
         android:id="@+id/imageView5"
