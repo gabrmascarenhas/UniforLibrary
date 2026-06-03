@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingVertical="4dp">
+
+    <Button
+        android:id="@+id/btnItemLoja"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical|start"
+        android:paddingHorizontal="16dp"
+        android:textAllCaps="false"
+        android:text="Item da Loja - 000 pontos"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#333333" />
+</LinearLayout>

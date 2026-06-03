@@ -3,9 +3,11 @@ package com.example.chatbox
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -65,21 +67,51 @@ class LibraryHomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        carregarLivros()
-    }
+        // Mapeamento de IDs para nomes dos livros
+        val bookNames = mapOf(
+            R.id.book_norma to "Teoria da Norma Jurídica",
+            R.id.book_legado to "Código Legado",
+            R.id.book_sobotta to "Sobotta",
+            R.id.book_sentido to "Em Busca de Sentido",
+            R.id.book_red_center to "Livro Vermelho Central",
+            R.id.book_crime to "Crime e Castigo",
+            R.id.book_noite_taverna to "Noite na Taverna",
+            R.id.book_jazz to "Jazz",
+            R.id.book_lines to "Linhas Brancas",
+            R.id.book_expressionismo to "Expressionismo",
+            R.id.book_teologia to "Teologia",
+            R.id.book_dadaismo to "Dadaismo"
+        )
 
-    override fun onResume() {
-        super.onResume()
-        carregarLivros()
-    }
+        val bookIds = bookNames.keys
 
-    private fun carregarLivros() {
-        lifecycleScope.launch {
-            try {
-                val livros = repositorio.listarLivros()
-                adapter.updateList(livros)
-            } catch (e: Exception) {
-                Toast.makeText(this@LibraryHomeActivity, "Erro ao carregar catálogo: ${e.message}", Toast.LENGTH_SHORT).show()
+        // Configurar a Pesquisa Inteligente
+        val etSearch = findViewById<EditText>(R.id.etSearch)
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString().trim().lowercase()
+                bookNames.forEach { (id, name) ->
+                    val bookView = findViewById<View>(id)
+                    if (name.lowercase().contains(query)) {
+                        bookView.visibility = View.VISIBLE
+                    } else {
+                        bookView.visibility = View.GONE
+                    }
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Configurar o clique para cada livro
+        bookIds.forEach { id ->
+            findViewById<View>(id)?.setOnClickListener {
+                if (id == R.id.book_noite_taverna) {
+                    val intent = Intent(this, AvaliacoesDetalhesActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    showAccessBookDialog()
+                }
             }
         }
     }
