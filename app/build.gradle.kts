@@ -1,4 +1,4 @@
- plugins {
+plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
@@ -11,7 +11,8 @@ android {
     defaultConfig {
         applicationId = "com.example.chatbox"
         minSdk = 24
-        targetSdk = 34
+        // Atualizado para 35 para acompanhar o compileSdk mais recente
+
         versionCode = 1
         versionName = "1.0"
 
@@ -28,11 +29,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        // Atualizado para Java 17 para evitar conflitos com SDKs modernos
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        // Atualizado para Java 17
+        jvmTarget = "17"
     }
 }
 
@@ -52,6 +55,9 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.glide)
+
+    // Esta linha puxa a versão configurada no libs.versions.toml (que atualizamos para 0.9.0)
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.11.0")

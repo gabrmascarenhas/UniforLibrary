@@ -31,6 +31,18 @@
         app:layout_constraintTop_toTopOf="@+id/headerBackground" />
 
     <TextView
+        android:id="@+id/tvPontosHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="0 pts"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/headerBackground" />
+
+    <TextView
         android:id="@+id/tvPontuacaoLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

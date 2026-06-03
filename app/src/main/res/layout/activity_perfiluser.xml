@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Sua pontuação total:\n3059 pontos!"
+        android:text="Sua pontuação total:\n0 pontos!"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,55 +44,66 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <!-- Foto de Perfil (ShapeableImageView da Versão B) -->
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView11"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginTop="100dp"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher_round"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+        app:strokeColor="#FFFFFF"
+        app:strokeWidth="2dp" />
 
+    <!-- Ícone de Edição (ivEditPhoto da Versão B) -->
     <ImageView
-        android:id="@+id/imageView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:id="@+id/ivEditPhoto"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="80dp"
+        android:background="@android:drawable/btn_default"
+        android:backgroundTint="#FFFFFF"
+        android:elevation="4dp"
+        android:padding="6dp"
         android:src="@android:drawable/ic_menu_edit"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextText10"
-        app:layout_constraintStart_toEndOf="@+id/editTextText10"
-        app:layout_constraintTop_toTopOf="@+id/editTextText10" />
+        app:layout_constraintStart_toStartOf="@+id/imageView11"
+        app:layout_constraintTop_toTopOf="@+id/imageView11"
+        app:tint="#000000" />
 
-    <EditText
-        android:id="@+id/editTextText10"
+    <!-- Nome do Usuário (TextView da Versão B) -->
+    <TextView
+        android:id="@+id/tvNomeUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:ems="10"
         android:gravity="center"
-        android:inputType="text"
-        android:text="João Pedro"
+        android:text="Carregando..."
         android:textColor="#FFFFFF"
-        android:textSize="34sp"
+        android:textSize="28sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView11" />
 
-    <EditText
-        android:id="@+id/editTextText11"
+    <!-- Centro do Usuário (TextView da Versão B) -->
+    <TextView
+        android:id="@+id/tvCentroUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:ems="10"
         android:gravity="center"
-        android:inputType="text"
-        android:text="Centro De Ciências Jurídicas"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:text="Centro de Ensino"
+        android:textColor="#CCCCCC"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText10" />
+        app:layout_constraintTop_toBottomOf="@+id/tvNomeUsuario" />
 
     <TextView
         android:id="@+id/textView7"
@@ -103,16 +114,17 @@
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText11" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCentroUsuario" />
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Livros Acessados: 43\nLivros Em Empréstimo: 2\nLivros Emprestados: 7\nAvaliações Feitas: 51"
+        android:lineSpacingExtra="4dp"
+        android:text="Carregando estatísticas..."
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -122,14 +134,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Total de Livros: 52"
+        android:text="Total de Livros: 0"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-    <!-- Bottom Nav -->
+    <!-- Bottom Nav (Mantido da Versão A) -->
     <LinearLayout
         android:id="@+id/layoutBottomNav"
         android:layout_width="match_parent"

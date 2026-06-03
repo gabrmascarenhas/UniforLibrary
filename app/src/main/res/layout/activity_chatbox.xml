@@ -172,4 +172,15 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/unifor_logodown_photoroom" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextMultiLine"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_message_ai" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
