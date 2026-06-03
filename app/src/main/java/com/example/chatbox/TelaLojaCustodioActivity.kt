@@ -1,12 +1,9 @@
 package com.example.chatbox
 
-import android.Manifest
 import android.app.Dialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +13,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -27,7 +22,6 @@ import kotlinx.coroutines.tasks.await
 
 class TelaLojaCustodioActivity : AppCompatActivity() {
 
-    private val REQUEST_NOTIFICATION_PERMISSION = 1001
     private val repositorioLoja = RepositorioLoja()
     
     // URL DEFINIDA MANUALMENTE PARA EVITAR ERRO DE CONEXÃO
@@ -39,9 +33,6 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tela_loja_custodio)
-
-        NotificationHelper.createNotificationChannel(this)
-        checkNotificationPermission()
 
         setupNavigation()
         carregarDadosIniciais()
@@ -80,7 +71,6 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
 
     private fun atualizarExibicaoPontos(pontos: Int) {
         findViewById<TextView>(R.id.tvPontosValor).text = "$pontos pontos!"
-        findViewById<TextView>(R.id.tvPontosHeader).text = "$pontos pts"
     }
 
     private fun carregarItensDaLoja() {
@@ -101,7 +91,7 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
                     return@launch
                 }
 
-                // Ordem Decrescente
+                // Ordenar itens por valor de forma decrescente (do mais caro para o mais barato)
                 val itensOrdenados = itens.sortedByDescending { 
                     it.pontos.filter { char -> char.isDigit() }.toIntOrNull() ?: 0 
                 }
@@ -112,20 +102,15 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
                     
                     val btnItem = itemView.findViewById<Button>(R.id.btnItemLoja)
                     btnItem.text = "${item.nome} - ${item.pontos}"
-                    btnItem.setOnClickListener { showPurchaseConfirmationDialog(item) }
+                    
+                    btnItem.setOnClickListener {
+                        showPurchaseConfirmationDialog(item)
+                    }
                     
                     container.addView(itemView)
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@TelaLojaCustodioActivity, "Erro ao carregar itens: ${e.message}", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-    private fun checkNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATION_PERMISSION)
+                Toast.makeText(this@TelaLojaCustodioActivity, "Erro ao carregar loja", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -140,14 +125,19 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
 
         dialog.findViewById<Button>(R.id.btnConfirm).setOnClickListener {
             val precoItem = item.pontos.filter { it.isDigit() }.toIntOrNull() ?: 0
+            
             if (pontosAtuais >= precoItem) {
                 efetuarCompra(item, precoItem)
                 dialog.dismiss()
             } else {
-                Toast.makeText(this, "Saldo insuficiente!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Pontos insuficientes!", Toast.LENGTH_SHORT).show()
             }
         }
-        dialog.findViewById<ImageView>(R.id.btnClose).setOnClickListener { dialog.dismiss() }
+
+        dialog.findViewById<ImageView>(R.id.btnClose).setOnClickListener {
+            dialog.dismiss()
+        }
+
         dialog.show()
     }
 
@@ -158,17 +148,13 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 db.child("users").child(userId).child("pontos").setValue(novosPontos).await()
+                
                 pontosAtuais = novosPontos
                 atualizarExibicaoPontos(pontosAtuais)
 
-                NotificationHelper.showNotification(
-                    this@TelaLojaCustodioActivity,
-                    "Compra Realizada!",
-                    "Você comprou ${item.nome}. Retire em até 3 dias!"
-                )
                 showPurchaseSuccessDialog()
             } catch (e: Exception) {
-                Toast.makeText(this@TelaLojaCustodioActivity, "Falha na transação: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@TelaLojaCustodioActivity, "Erro ao processar compra", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -177,7 +163,13 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_purchase_success)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.findViewById<ImageView>(R.id.btnCloseSuccess).setOnClickListener { dialog.dismiss() }
+
+        val btnClose = dialog.findViewById<ImageView>(R.id.btnCloseSuccess)
+
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
         dialog.show()
     }
 }
