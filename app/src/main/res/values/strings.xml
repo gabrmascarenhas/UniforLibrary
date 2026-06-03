@@ -6,7 +6,7 @@
     <string name="event_semana_livro_label">Dia 9 a 13: </string>
     <string name="event_semana_livro_name">Semana do Livro na Unifor</string>
     <string name="event_entrega_livro_label">Dia 18: </string>
-    <string name="event_entrega_livro_name">Entre do livro: “Crime e Castigo”</string>
+    <string name="event_entrega_livro_name">Entregar do livro: Crime e Castigo</string>
     <string name="btn_voltar">Voltar</string>
     <string name="entrar">Entrar</string>
 </resources>

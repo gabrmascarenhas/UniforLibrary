@@ -35,7 +35,7 @@ class perfiladm : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.button3)?.setOnClickListener {
-            val intent = Intent(this, CadastroLivroActivity::class.java)
+            val intent = Intent(this, GerenciarLivrosActivity::class.java)
             startActivity(intent)
         }
 
