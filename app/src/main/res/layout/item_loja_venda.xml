@@ -2,20 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingVertical="4dp">
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnItemLoja"
+    <RelativeLayout
+        android:id="@+id/rlItemLoja"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="?attr/selectableItemBackground"
-        android:gravity="center_vertical|start"
-        android:paddingHorizontal="16dp"
-        android:textAllCaps="false"
-        android:text="Item da Loja - 000 pontos"
-        android:textColor="@android:color/white"
-        android:textSize="16sp" />
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/tvNomeItemLoja"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/tvPontosItemLoja"
+            android:text="Item da Loja"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvPontosItemLoja"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="000 pontos"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"

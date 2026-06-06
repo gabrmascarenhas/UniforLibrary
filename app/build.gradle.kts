@@ -32,10 +32,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        // Atualizado para Java 17
-        jvmTarget = "17"
-    }
+
 }
 
 dependencies {

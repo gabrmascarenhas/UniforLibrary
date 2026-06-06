@@ -16,7 +16,7 @@ class perfiladm : AppCompatActivity() {
         setContentView(R.layout.activity_perfiladm)
 
         findViewById<View>(R.id.nav_unishop_adm)?.setOnClickListener {
-            val intent = Intent(this, TelaLojaCustodioActivity::class.java)
+            val intent = Intent(this, LojaCustodioPontosActivity::class.java)
             startActivity(intent)
         }
 

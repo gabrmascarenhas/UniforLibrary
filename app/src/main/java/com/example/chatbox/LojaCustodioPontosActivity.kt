@@ -30,13 +30,12 @@ class LojaCustodioPontosActivity : AppCompatActivity() {
             PontoItemCustodio("Comprar livro", "9999 pontos"),
             PontoItemCustodio("Digitalizar livro", "1000 pontos"),
             PontoItemCustodio("Cafézinho", "100 pontos")
-        )
+        ).sortedByDescending { it.pontos.filter { char -> char.isDigit() }.toIntOrNull() ?: 0 }
+
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = PontosAdapterCustodio(dados)
     }
 }
-
-data class PontoItemCustodio(val nome: String, val pontos: String)
 
 class PontosAdapterCustodio(private val lista: List<PontoItemCustodio>) : RecyclerView.Adapter<PontosAdapterCustodio.ViewHolder>() {
 
