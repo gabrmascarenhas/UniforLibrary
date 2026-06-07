@@ -85,141 +85,78 @@ class TelaLojaCustodioActivity : AppCompatActivity() {
     private fun carregarItensDaLoja() {
         val container = findViewById<LinearLayout>(R.id.containerItens) ?: return
 
-        lifecycleScope.launch {
-            try {
-                val itens = repositorioLoja.obterItens()
+        // Mudança para observação em tempo real
+        repositorioLoja.observarItens { itens ->
+            container.removeAllViews()
 
-                if (itens.isNotEmpty()) {
-                    container.removeAllViews()
+            itens.forEach { item ->
+                val itemView = LayoutInflater.from(this@TelaLojaCustodioActivity)
+                    .inflate(R.layout.item_loja_venda, container, false)
 
-                    itens.forEach { item ->
-                        val itemView = LayoutInflater.from(this@TelaLojaCustodioActivity)
-                            .inflate(R.layout.item_loja_venda, container, false)
+                val tvNome = itemView.findViewById<TextView>(R.id.tvNomeItemLoja)
+                val tvPontos = itemView.findViewById<TextView>(R.id.tvPontosItemLoja)
+                val rlItem = itemView.findViewById<View>(R.id.rlItemLoja)
 
-                        val tvNome = itemView.findViewById<TextView>(R.id.tvNomeItemLoja)
-                        val tvPontos = itemView.findViewById<TextView>(R.id.tvPontosItemLoja)
-                        val rlItem = itemView.findViewById<View>(R.id.rlItemLoja)
+                tvNome.text = item.nome
+                tvPontos.text = item.pontos
 
-                        tvNome.text = item.nome
-                        tvPontos.text = item.pontos
-
-                        rlItem.setOnClickListener {
-                            showPurchaseConfirmationDialog(item)
-                        }
-                        container.addView(itemView)
-                    }
+                rlItem.setOnClickListener {
+                    showPurchaseConfirmationDialog(item)
                 }
-            } catch (e: Exception) {
-                Toast.makeText(this@TelaLojaCustodioActivity, "Erro ao carregar loja: ${e.message}", Toast.LENGTH_SHORT).show()
+                container.addView(itemView)
             }
         }
     }
 
     private fun showPurchaseConfirmationDialog(item: PontoItemCustodio) {
-
         val dialog = Dialog(this)
-
         dialog.setContentView(R.layout.dialog_confirm_purchase)
-
-        dialog.window?.setBackgroundDrawable(
-            ColorDrawable(Color.TRANSPARENT)
-        )
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val btnConfirm = dialog.findViewById<Button>(R.id.btnConfirm)
         val btnClose = dialog.findViewById<ImageView>(R.id.btnClose)
 
-        dialog.findViewById<TextView>(R.id.tvTitle)?.text =
-            "Confirmar compra?"
-
-        dialog.findViewById<TextView>(R.id.tvMessage)?.text =
-            "Deseja comprar ${item.nome} por ${item.pontos}?"
+        dialog.findViewById<TextView>(R.id.tvTitle)?.text = "Confirmar compra?"
+        dialog.findViewById<TextView>(R.id.tvMessage)?.text = "Deseja comprar ${item.nome} por ${item.pontos}?"
 
         btnConfirm.setOnClickListener {
-
-            val precoItem =
-                item.pontos
-                    .filter { it.isDigit() }
-                    .toIntOrNull()
-                    ?: 0
+            val precoItem = item.pontos.filter { it.isDigit() }.toIntOrNull() ?: 0
 
             if (pontosAtuais >= precoItem) {
-
                 efetuarCompra(item, precoItem)
-
                 dialog.dismiss()
-
             } else {
-
-                Toast.makeText(
-                    this,
-                    "Pontos insuficientes!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Pontos insuficientes!", Toast.LENGTH_SHORT).show()
             }
         }
 
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
+        btnClose.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
-    private fun efetuarCompra(
-        item: PontoItemCustodio,
-        preco: Int
-    ) {
-
+    private fun efetuarCompra(item: PontoItemCustodio, preco: Int) {
         val userId = auth.currentUser?.uid ?: return
-
         val novosPontos = pontosAtuais - preco
 
         lifecycleScope.launch {
-
             try {
-
-                db.child("users")
-                    .child(userId)
-                    .child("pontos")
-                    .setValue(novosPontos)
-                    .await()
-
+                db.child("users").child(userId).child("pontos").setValue(novosPontos).await()
                 pontosAtuais = novosPontos
-
                 atualizarExibicaoPontos(pontosAtuais)
-
                 showPurchaseSuccessDialog()
-
             } catch (e: Exception) {
-
-                Toast.makeText(
-                    this@TelaLojaCustodioActivity,
-                    "Erro ao processar compra",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this@TelaLojaCustodioActivity, "Erro ao processar compra", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun showPurchaseSuccessDialog() {
-
         val dialog = Dialog(this)
-
-        dialog.setContentView(
-            R.layout.dialog_purchase_success
-        )
-
-        dialog.window?.setBackgroundDrawable(
-            ColorDrawable(Color.TRANSPARENT)
-        )
-
-        dialog.findViewById<ImageView>(
-            R.id.btnCloseSuccess
-        )?.setOnClickListener {
-
+        dialog.setContentView(R.layout.dialog_purchase_success)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.findViewById<ImageView>(R.id.btnCloseSuccess)?.setOnClickListener {
             dialog.dismiss()
         }
-
         dialog.show()
     }
 }
