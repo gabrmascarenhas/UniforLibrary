@@ -8,6 +8,8 @@
     android:background="#211D1D"
     tools:context=".perfiladm">
 
+
+
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="76dp"
@@ -128,7 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:backgroundTint="#0437DC"
-        android:text="Adicionar Livros"
+        android:text="Gerenciar Livros"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
