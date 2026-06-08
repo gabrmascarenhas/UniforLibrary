@@ -37,7 +37,6 @@
     <string name="book_author">Autor: Álvares de Azevedo</string>
     <string name="book_year">Ano: 1855</string>
     <string name="book_publisher">Editora: Tipografia de J. J. da Rocha</string>
-    <string name="book_synopsis_label">Sinopse</string>
     <string name="book_synopsis_text">"Noite na Taverna" é uma obra-prima do ultrarromantismo brasileiro de Álvares de Azevedo. Apresenta contos macabros narrados por jovens boêmios em uma taverna sombria.</string>
 
     <string name="confirm_delete_msg">Você tem certeza que deseja excluir?</string>

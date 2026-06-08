@@ -29,6 +29,7 @@ class LibraryHomeActivity : AppCompatActivity() {
     private val allLivros = mutableListOf<Livro>()
     private lateinit var adapter: HomeLivroAdapter
     private lateinit var rvLivros: RecyclerView
+    private var listaCompletaLivros: List<Livro> = listOf()
 
     // Configuração SabedorIA para Pesquisa Inteligente
     // IMPORTANTE: Insira sua Gemini API Key aqui
@@ -45,6 +46,9 @@ class LibraryHomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_library_home)
 
+        val isAdmin = intent.getBooleanExtra("IS_ADMIN", false)
+
+        // Inicializar RecyclerView e Adapter
         rvLivros = findViewById(R.id.rvLivrosHome)
         rvLivros.layoutManager = GridLayoutManager(this, 3)
         adapter = HomeLivroAdapter(mutableListOf()) { livro ->
@@ -87,8 +91,8 @@ class LibraryHomeActivity : AppCompatActivity() {
                 }
                 adapter.updateList(filtered)
             }
-            override fun afterTextChanged(s: Editable?) {}
-        })
+        }
+    }
 
         // Pesquisa "viajando pelo banco" + Resposta IA
         btnSmartSearch?.setOnClickListener {
@@ -100,6 +104,9 @@ class LibraryHomeActivity : AppCompatActivity() {
                 }
                 processarPesquisaIA(query)
             }
+        }
+        if (::adapter.isInitialized) {
+            adapter.updateList(listaFiltrada)
         }
     }
 
@@ -164,6 +171,13 @@ class LibraryHomeActivity : AppCompatActivity() {
         startActivity(Intent(this, activity))
     }
 
+    private fun openProfile(isAdmin: Boolean) {
+        val destination = if (isAdmin) perfiladm::class.java else perfiluser::class.java
+        val intent = Intent(this, destination)
+        intent.putExtra("IS_ADMIN", isAdmin)
+        startActivity(intent)
+    }
+
     private fun showAccessBookDialog(livro: Livro) {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_access_book)
@@ -177,5 +191,18 @@ class LibraryHomeActivity : AppCompatActivity() {
         }
         dialog.findViewById<Button>(R.id.btnNo).setOnClickListener { dialog.dismiss() }
         dialog.show()
+    }
+
+    private fun setupBookClick(viewId: Int, title: String, imageRes: Int, rating: String, livroId: String) {
+        val isAdmin = intent.getBooleanExtra("IS_ADMIN", false)
+        findViewById<View>(viewId)?.setOnClickListener {
+            val intent = Intent(this, DetalhesLivroActivity::class.java)
+            intent.putExtra("LIVRO_ID", livroId)
+            intent.putExtra("BOOK_TITLE", title)
+            intent.putExtra("BOOK_IMAGE", imageRes)
+            intent.putExtra("BOOK_RATING", rating)
+            intent.putExtra("IS_ADMIN", isAdmin)
+            startActivity(intent)
+        }
     }
 }
