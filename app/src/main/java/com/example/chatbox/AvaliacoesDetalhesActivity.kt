@@ -18,7 +18,10 @@ class AvaliacoesDetalhesActivity : AppCompatActivity() {
 
         val btnReviews = findViewById<Button>(R.id.btnReviewsList)
         btnReviews.setOnClickListener {
-            val intent = Intent(this, AvaliarUsuariosActivity::class.java)
+            val intent = Intent(this, ListaResenhasActivity::class.java)
+            // Como este layout é fixo para "Noite na Taverna", passamos o ID correspondente
+            intent.putExtra("LIVRO_ID", "noite_na_taverna_id")
+            intent.putExtra("LIVRO_TITULO", "Noite na Taverna")
             startActivity(intent)
         }
 
