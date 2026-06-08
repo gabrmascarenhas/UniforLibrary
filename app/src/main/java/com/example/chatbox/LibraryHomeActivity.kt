@@ -26,12 +26,7 @@ class LibraryHomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_library_home)
 
-        rvLivros = findViewById(R.id.rvLivrosHome)
-        rvLivros.layoutManager = GridLayoutManager(this, 3)
-        adapter = HomeLivroAdapter(mutableListOf<Livro>()) { livro: Livro ->
-            showAccessBookDialog(livro)
-        }
-        rvLivros.adapter = adapter
+        val isAdmin = intent.getBooleanExtra("IS_ADMIN", false)
 
         val etSearch = findViewById<EditText>(R.id.etSearch)
         etSearch.addTextChangedListener(object : TextWatcher {
@@ -43,15 +38,26 @@ class LibraryHomeActivity : AppCompatActivity() {
         })
 
         // Configurar clique no ícone de perfil do topo (círculo)
-        findViewById<View>(R.id.circleProfile).setOnClickListener { openProfile() }
+        findViewById<View>(R.id.circleProfile)?.setOnClickListener {
+            openProfile(isAdmin)
+        }
 
         // Configurar clique no ícone de perfil da Bottom Nav
-        findViewById<View>(R.id.nav_perfil_home).setOnClickListener { openProfile() }
+        findViewById<View>(R.id.nav_perfil_home)?.setOnClickListener {
+            openProfile(isAdmin)
+        }
 
         // Configurar clique no UniShop
         findViewById<View>(R.id.nav_unishop_home)?.setOnClickListener {
             val isAdmin = intent.getBooleanExtra("IS_ADMIN", false)
             val destination = if (isAdmin) LojaCustodioPontosActivity::class.java else TelaLojaCustodioActivity::class.java
+            val intent = Intent(this, destination)
+            intent.putExtra("IS_ADMIN", isAdmin)
+            val destination = if (isAdmin) {
+                LojaCustodioPontosActivity::class.java
+            } else {
+                TelaLojaCustodioActivity::class.java
+            }
             val intent = Intent(this, destination)
             intent.putExtra("IS_ADMIN", isAdmin)
             startActivity(intent)
@@ -61,6 +67,7 @@ class LibraryHomeActivity : AppCompatActivity() {
         findViewById<View>(R.id.nav_reviews_home)?.setOnClickListener {
             val intent = Intent(this, ReviewsActivity::class.java)
             intent.putExtra("IS_ADMIN", intent.getBooleanExtra("IS_ADMIN", false))
+            intent.putExtra("IS_ADMIN", isAdmin)
             startActivity(intent)
         }
 
@@ -68,12 +75,14 @@ class LibraryHomeActivity : AppCompatActivity() {
         findViewById<View>(R.id.nav_datas_home)?.setOnClickListener {
             val intent = Intent(this, CalendarActivity::class.java)
             intent.putExtra("IS_ADMIN", intent.getBooleanExtra("IS_ADMIN", false))
+            intent.putExtra("IS_ADMIN", isAdmin)
             startActivity(intent)
         }
 
         // Configurar clique no ícone do Terminal (Brackets)
-        findViewById<View>(R.id.circleTerminal).setOnClickListener {
+        findViewById<View>(R.id.circleTerminal)?.setOnClickListener {
             val intent = Intent(this, ChatBoxActivity::class.java)
+            intent.putExtra("IS_ADMIN", isAdmin)
             intent.putExtra("IS_ADMIN", intent.getBooleanExtra("IS_ADMIN", false))
             startActivity(intent)
         }
@@ -120,11 +129,16 @@ class LibraryHomeActivity : AppCompatActivity() {
         val isAdmin = intent.getBooleanExtra("IS_ADMIN", false)
         if (isAdmin) {
             val intent = Intent(this, perfiladm::class.java)
-            startActivity(intent)
-        } else {
-            val intent = Intent(this, perfiluser::class.java)
+            intent.putExtra("IS_ADMIN", isAdmin)
             startActivity(intent)
         }
+    }
+
+    private fun openProfile(isAdmin: Boolean) {
+        val destination = if (isAdmin) perfiladm::class.java else perfiluser::class.java
+        val intent = Intent(this, destination)
+        intent.putExtra("IS_ADMIN", isAdmin)
+        startActivity(intent)
     }
 
     private fun showAccessBookDialog(livro: Livro) {
@@ -132,21 +146,17 @@ class LibraryHomeActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_access_book)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        val btnYes = dialog.findViewById<Button>(R.id.btnYes)
-        val btnNo = dialog.findViewById<Button>(R.id.btnNo)
-
-        btnYes.setOnClickListener {
+    private fun setupBookClick(viewId: Int, title: String, imageRes: Int, rating: String) {
+        val isAdmin = intent.getBooleanExtra("IS_ADMIN", false)
+        findViewById<View>(viewId)?.setOnClickListener {
             val intent = Intent(this, DetalhesLivroActivity::class.java)
             intent.putExtra("LIVRO_ID", livro.id)
             intent.putExtra("IS_ADMIN", intent.getBooleanExtra("IS_ADMIN", false))
+            intent.putExtra("BOOK_TITLE", title)
+            intent.putExtra("BOOK_IMAGE", imageRes)
+            intent.putExtra("BOOK_RATING", rating)
+            intent.putExtra("IS_ADMIN", isAdmin)
             startActivity(intent)
-            dialog.dismiss()
         }
-
-        btnNo.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
     }
 }
