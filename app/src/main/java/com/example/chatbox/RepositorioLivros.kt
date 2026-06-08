@@ -48,4 +48,17 @@ class RepositorioLivros {
             }
         })
     }
+
+    suspend fun buscarLivroPorId(id: String): Livro? = suspendCancellableCoroutine { continuation ->
+        db.child("livros").child(id).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val livro = snapshot.getValue(Livro::class.java)
+                continuation.resume(livro)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                continuation.resumeWithException(error.toException())
+            }
+        })
+    }
 }
