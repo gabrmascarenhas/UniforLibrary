@@ -11,46 +11,88 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/ivCapaLivroResenha"
+            android:layout_width="60dp"
+            android:layout_height="90dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/tvUsuario"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:text="Nome do Usuário"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/btnDelete"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivCapaLivroResenha"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layoutNota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@id/ivCapaLivroResenha"
+            app:layout_constraintTop_toBottomOf="@id/tvUsuario">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star"
+                app:tint="#FFD700" />
+
+            <TextView
+                android:id="@+id/tvNotaResenha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="5.0"
+                android:textColor="#FFD700"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:text="00/00/0000"
             android:textColor="#888888"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvUsuario" />
+            android:textSize="11sp"
+            app:layout_constraintStart_toEndOf="@id/ivCapaLivroResenha"
+            app:layout_constraintTop_toBottomOf="@id/layoutNota" />
 
         <TextView
             android:id="@+id/tvComentario"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Este é um comentário de exemplo para a resenha do livro."
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="Comentário da resenha..."
             android:textColor="#DDDDDD"
-            android:textSize="14sp"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivCapaLivroResenha"
             app:layout_constraintTop_toBottomOf="@id/tvData" />
 
         <ImageView
             android:id="@+id/btnDelete"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="4dp"
             android:src="@drawable/ic_reviews"

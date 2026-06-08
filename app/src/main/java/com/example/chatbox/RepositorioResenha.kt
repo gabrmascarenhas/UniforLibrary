@@ -14,8 +14,11 @@ data class Resenha(
     val id: String = "",
     val livroId: String = "",
     val userId: String = "",
+    val usuarioId: String = "", // Para compatibilidade com Avaliacao
     val nomeUsuario: String = "",
     val texto: String = "",
+    val comentario: String = "", // Para compatibilidade com Avaliacao
+    val nota: Double = 0.0,
     val data: Long = System.currentTimeMillis()
 )
 

@@ -72,7 +72,12 @@ class RepositorioLivros {
         }
         
         val userId = currentUser.uid
-        val avaliacaoComUser = avaliacao.copy(usuarioId = userId)
+        
+        // Buscar nome do usuário no banco
+        val userSnapshot = db.child("users").child(userId).get().await()
+        val nome = userSnapshot.child("nome").getValue(String::class.java) ?: "Usuário"
+        
+        val avaliacaoComUser = avaliacao.copy(usuarioId = userId, nomeUsuario = nome)
         
         // Alterado para 'resenhas' para coincidir com as regras do Firebase
         val ref = db.child("resenhas").push()
