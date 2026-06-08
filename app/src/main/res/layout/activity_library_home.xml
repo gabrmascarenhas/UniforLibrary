@@ -97,18 +97,35 @@
             android:paddingBottom="24dp">
 
             <!-- Barra de Busca -->
-            <EditText
-                android:id="@+id/etSearch"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_white_rounded"
-                android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="12dp"
-                android:hint=" "
-                android:paddingHorizontal="16dp"
-                app:tint="#000000" />
+                android:layout_marginTop="16dp">
+
+                <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_white_rounded"
+                    android:drawableStart="@drawable/ic_person"
+                    android:drawablePadding="12dp"
+                    android:hint="Pesquisar livros ou perguntar à IA..."
+                    android:paddingHorizontal="16dp"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    app:tint="#000000" />
+
+                <ImageButton
+                    android:id="@+id/btnSmartSearch"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/brackets_icon"
+                    app:tint="#0A45D3" />
+            </RelativeLayout>
 
             <!-- Seção: Livros do Banco (Dinamizado) -->
             <TextView
@@ -204,6 +221,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/nav_home_bottom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
