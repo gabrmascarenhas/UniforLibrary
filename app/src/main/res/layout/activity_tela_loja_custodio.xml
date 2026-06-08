@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#121212"
-    tools:context=".MainActivity">
+    tools:context=".TelaLojaCustodioActivity">
 
     <View
         android:id="@+id/headerBackground"
@@ -31,18 +31,6 @@
         app:layout_constraintTop_toTopOf="@+id/headerBackground" />
 
     <TextView
-        android:id="@+id/tvPontosHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="0 pts"
-        android:textColor="@android:color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/headerBackground" />
-
-    <TextView
         android:id="@+id/tvPontuacaoLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="3059 pontos!"
+        android:text="Não foi possivel carregar seus pontos!"
         android:textColor="#BBBBBB"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tvPontuacaoLabel"
@@ -100,76 +88,166 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dividerHeader">
 
-        <Button
-            android:id="@+id/btnMochila"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:textAllCaps="false"
-            android:text="Mochila UNIFOR                                    4000 pontos"
-            android:textColor="@android:color/white" />
-
-        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
-
-        <Button
-            android:id="@+id/btnCamisa"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:textAllCaps="false"
-            android:text="Camisa UNIFOR                                     3000 pontos"
-            android:textColor="@android:color/white" />
-
-        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
-
-        <Button
-            android:id="@+id/btnCaneca"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:textAllCaps="false"
-            android:text="Caneca UNIFOR                                     2000 pontos"
-            android:textColor="@android:color/white" />
-
-        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
-
-        <Button
+        <!-- Item: Comprar livro (10000) -->
+        <RelativeLayout
             android:id="@+id/btnComprarLivro"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:textAllCaps="false"
-            android:text="Comprar livro                                       10000 pontos"
-            android:textColor="@android:color/white" />
-
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Comprar livro"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="10000 pontos"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
 
-        <Button
+        <!-- Item: Mochila (4000) -->
+        <RelativeLayout
+            android:id="@+id/btnMochila"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Mochila UNIFOR"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="4000 pontos"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
+
+        <!-- Item: Camisa (3000) -->
+        <RelativeLayout
+            android:id="@+id/btnCamisa"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Camisa UNIFOR"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="3000 pontos"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
+
+        <!-- Item: Caneca (2000) -->
+        <RelativeLayout
+            android:id="@+id/btnCaneca"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Caneca UNIFOR"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="2000 pontos"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
+
+        <!-- Item: Digitalizar livro (1000) -->
+        <RelativeLayout
             android:id="@+id/btnDigitalizarLivro"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:textAllCaps="false"
-            android:text="Digitalizar livro                                      1000 pontos"
-            android:textColor="@android:color/white" />
-
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Digitalizar livro"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="1000 pontos"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
 
-        <Button
+        <!-- Item: Cafézinho (100) -->
+        <RelativeLayout
             android:id="@+id/btnCafe"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:textAllCaps="false"
-            android:text="Cafézinho                                                100 pontos"
-            android:textColor="@android:color/white" />
-
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Cafézinho"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="100 pontos"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" />
 
     </LinearLayout>

@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212">
+    android:background="@color/background_dark">
 
     <!-- Header -->
     <LinearLayout
         android:id="@+id/layoutHeaderDetails"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#0437DC"
+        android:background="@color/blue_header"
         android:gravity="center"
         android:orientation="horizontal"
         android:baselineAligned="true"
@@ -22,7 +21,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="Unifor"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:textSize="48sp"
             android:textStyle="bold" />
 
@@ -31,7 +30,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="Library"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:textSize="32sp" />
     </LinearLayout>
 
@@ -52,8 +51,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Título do Livro"
-                android:textColor="#FFFFFF"
+                android:text="@string/book_title_detailed"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +73,7 @@
                 android:layout_width="250dp"
                 android:layout_height="380dp"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="#1E1E1E"
+                app:cardBackgroundColor="@color/card_background"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -82,14 +81,13 @@
                 app:layout_constraintTop_toBottomOf="@id/tvBookTitleDetailed">
 
                 <ImageView
-                    android:id="@+id/ivBookCoverDetailed"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/image_icon" />
+                    android:src="@drawable/noite_na_taverna" />
             </androidx.cardview.widget.CardView>
 
-            <!-- Trash Icon -->
+            <!-- Trash Icon and Rating -->
             <ImageView
                 android:id="@+id/ivDeleteDetailed"
                 android:layout_width="32dp"
@@ -99,48 +97,41 @@
                 app:layout_constraintStart_toStartOf="@id/cardBookDetailed"
                 app:layout_constraintTop_toBottomOf="@id/cardBookDetailed" />
 
-            <!-- Availability and Rating -->
             <LinearLayout
-                android:id="@+id/layoutAvailabilityRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@id/ivDeleteDetailed"
+                app:layout_constraintEnd_toEndOf="@id/cardBookDetailed"
+                app:layout_constraintTop_toTopOf="@id/ivDeleteDetailed">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rating_detailed"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/ic_star" />
+            </LinearLayout>
+
+            <!-- Availability Text -->
+            <TextView
+                android:id="@+id/tvAvailability"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:text="@string/availability_text"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ivDeleteDetailed">
-
-                <TextView
-                    android:id="@+id/tvAvailability"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Disponível para leitura"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvBookRatingDetailed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="4.5"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="4dp"
-                        android:src="@drawable/ic_star" />
-                </LinearLayout>
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@id/ivDeleteDetailed" />
 
             <!-- Buttons -->
             <Button
@@ -148,21 +139,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:backgroundTint="#0437DC"
-                android:text="Detalhes do Livro"
+                android:backgroundTint="@color/blue_header"
+                android:text="@string/btn_details"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                app:layout_constraintTop_toBottomOf="@id/layoutAvailabilityRating" />
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/tvAvailability" />
 
             <Button
                 android:id="@+id/btnEvaluate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:backgroundTint="#0437DC"
-                android:text="Avaliar Livro"
+                android:backgroundTint="@color/blue_header"
+                android:text="@string/btn_evaluate"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/btnDetails" />
 
             <Button
@@ -170,10 +161,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:backgroundTint="#0437DC"
-                android:text="Ler PDF"
+                android:backgroundTint="@color/blue_header"
+                android:text="@string/btn_read_pdf"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/btnEvaluate" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,4 +9,14 @@
     <string name="event_entrega_livro_name">Entregar do livro: Crime e Castigo</string>
     <string name="btn_voltar">Voltar</string>
     <string name="entrar">Entrar</string>
+
+    <!-- Detalhes do Livro -->
+    <string name="author_format">Autor: %1$s</string>
+    <string name="year_format">Ano: %1$d</string>
+    <string name="publisher_format">Editora: %1$s</string>
+    <string name="book_removed">Livro removido</string>
+    <string name="error_removing">Erro ao remover</string>
+    <string name="evaluation_sent">Avaliação enviada!</string>
+    <string name="load_book_error">Erro ao carregar livro</string>
+    <string name="book_synopsis_label">Sinopse:</string>
 </resources>

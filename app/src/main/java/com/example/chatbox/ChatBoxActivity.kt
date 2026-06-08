@@ -20,11 +20,11 @@ import kotlinx.coroutines.launch
 class ChatBoxActivity : AppCompatActivity() {
 
     // ⚠️ COLOQUE SUA API KEY DO GOOGLE AI STUDIO AQUI
-    private val API_KEY = "AQ.Ab8RN6LjcPt-XORz9IOt--9Ax0lZVUZlUlnu3GjuojbDDwOmlg"
+    private val API_KEY = ""
 
     private val generativeModel = GenerativeModel(
         // ALTERADO: Mudamos para o Gemini 1.5 Pro para testar se a rota resolve o seu problema
-        modelName = "gemini-1.5-pro",
+        modelName = "gemini-3-flash-preview",
         apiKey = API_KEY,
         systemInstruction = content {
             text(
