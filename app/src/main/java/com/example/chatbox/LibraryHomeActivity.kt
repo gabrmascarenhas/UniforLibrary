@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -27,6 +28,14 @@ class LibraryHomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_library_home)
 
         val isAdmin = intent.getBooleanExtra("IS_ADMIN", false)
+
+        // Inicializar RecyclerView e Adapter
+        rvLivros = findViewById(R.id.rvLivrosHome)
+        rvLivros.layoutManager = GridLayoutManager(this, 3)
+        adapter = HomeLivroAdapter(listaCompletaLivros) { livro ->
+            showAccessBookDialog(livro)
+        }
+        rvLivros.adapter = adapter
 
         val etSearch = findViewById<EditText>(R.id.etSearch)
         etSearch.addTextChangedListener(object : TextWatcher {
@@ -49,15 +58,7 @@ class LibraryHomeActivity : AppCompatActivity() {
 
         // Configurar clique no UniShop
         findViewById<View>(R.id.nav_unishop_home)?.setOnClickListener {
-            val isAdmin = intent.getBooleanExtra("IS_ADMIN", false)
             val destination = if (isAdmin) LojaCustodioPontosActivity::class.java else TelaLojaCustodioActivity::class.java
-            val intent = Intent(this, destination)
-            intent.putExtra("IS_ADMIN", isAdmin)
-            val destination = if (isAdmin) {
-                LojaCustodioPontosActivity::class.java
-            } else {
-                TelaLojaCustodioActivity::class.java
-            }
             val intent = Intent(this, destination)
             intent.putExtra("IS_ADMIN", isAdmin)
             startActivity(intent)
@@ -66,7 +67,6 @@ class LibraryHomeActivity : AppCompatActivity() {
         // Configurar clique no Reviews
         findViewById<View>(R.id.nav_reviews_home)?.setOnClickListener {
             val intent = Intent(this, ReviewsActivity::class.java)
-            intent.putExtra("IS_ADMIN", intent.getBooleanExtra("IS_ADMIN", false))
             intent.putExtra("IS_ADMIN", isAdmin)
             startActivity(intent)
         }
@@ -74,7 +74,6 @@ class LibraryHomeActivity : AppCompatActivity() {
         // Configurar clique no Datas (Calendário)
         findViewById<View>(R.id.nav_datas_home)?.setOnClickListener {
             val intent = Intent(this, CalendarActivity::class.java)
-            intent.putExtra("IS_ADMIN", intent.getBooleanExtra("IS_ADMIN", false))
             intent.putExtra("IS_ADMIN", isAdmin)
             startActivity(intent)
         }
@@ -83,14 +82,13 @@ class LibraryHomeActivity : AppCompatActivity() {
         findViewById<View>(R.id.circleTerminal)?.setOnClickListener {
             val intent = Intent(this, ChatBoxActivity::class.java)
             intent.putExtra("IS_ADMIN", isAdmin)
-            intent.putExtra("IS_ADMIN", intent.getBooleanExtra("IS_ADMIN", false))
             startActivity(intent)
         }
 
         // Configurar clique no botão Requisitar Livro
         findViewById<Button>(R.id.btnRequisitarLivro)?.setOnClickListener {
             val intent = Intent(this, RequisitarLivroCustodioActivity::class.java)
-            intent.putExtra("IS_ADMIN", intent.getBooleanExtra("IS_ADMIN", false))
+            intent.putExtra("IS_ADMIN", isAdmin)
             startActivity(intent)
         }
 
@@ -106,7 +104,9 @@ class LibraryHomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 listaCompletaLivros = repositorio.listarLivros()
-                adapter.updateList(listaCompletaLivros)
+                if (::adapter.isInitialized) {
+                    adapter.updateList(listaCompletaLivros)
+                }
             } catch (e: Exception) {
                 Toast.makeText(this@LibraryHomeActivity, "Erro ao carregar catálogo: ${e.message}", Toast.LENGTH_SHORT).show()
             }
@@ -122,7 +122,9 @@ class LibraryHomeActivity : AppCompatActivity() {
                         livro.autor.contains(query, ignoreCase = true)
             }
         }
-        adapter.updateList(listaFiltrada)
+        if (::adapter.isInitialized) {
+            adapter.updateList(listaFiltrada)
+        }
     }
 
     private fun openProfile() {
@@ -146,12 +148,32 @@ class LibraryHomeActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_access_book)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-    private fun setupBookClick(viewId: Int, title: String, imageRes: Int, rating: String) {
+
+
+        val btnYes = dialog.findViewById<Button>(R.id.btnYes)
+        val btnNo = dialog.findViewById<Button>(R.id.btnNo)
+
+        btnNo?.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnYes?.setOnClickListener {
+            val isAdmin = intent.getBooleanExtra("IS_ADMIN", false)
+            val intentDetails = Intent(this, DetalhesLivroActivity::class.java)
+            intentDetails.putExtra("LIVRO_ID", livro.id)
+            intentDetails.putExtra("IS_ADMIN", isAdmin)
+            startActivity(intentDetails)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun setupBookClick(viewId: Int, title: String, imageRes: Int, rating: String, livroId: String) {
         val isAdmin = intent.getBooleanExtra("IS_ADMIN", false)
         findViewById<View>(viewId)?.setOnClickListener {
             val intent = Intent(this, DetalhesLivroActivity::class.java)
-            intent.putExtra("LIVRO_ID", livro.id)
-            intent.putExtra("IS_ADMIN", intent.getBooleanExtra("IS_ADMIN", false))
+            intent.putExtra("LIVRO_ID", livroId)
             intent.putExtra("BOOK_TITLE", title)
             intent.putExtra("BOOK_IMAGE", imageRes)
             intent.putExtra("BOOK_RATING", rating)

@@ -89,7 +89,7 @@
                     android:src="@drawable/image_icon" />
             </androidx.cardview.widget.CardView>
 
-            <!-- Trash Icon and Rating -->
+            <!-- Trash Icon -->
             <ImageView
                 android:id="@+id/ivDeleteDetailed"
                 android:layout_width="32dp"
@@ -99,41 +99,48 @@
                 app:layout_constraintStart_toStartOf="@id/cardBookDetailed"
                 app:layout_constraintTop_toBottomOf="@id/cardBookDetailed" />
 
+            <!-- Availability and Rating -->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="@id/ivDeleteDetailed"
-                app:layout_constraintEnd_toEndOf="@id/cardBookDetailed"
-                app:layout_constraintTop_toTopOf="@id/ivDeleteDetailed">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="4.5"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="4dp"
-                    android:src="@drawable/ic_star" />
-            </LinearLayout>
-
-            <!-- Availability Text -->
-            <TextView
-                android:id="@+id/tvAvailability"
+                android:id="@+id/layoutAvailabilityRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Disponível para leitura"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ivDeleteDetailed" />
+                app:layout_constraintTop_toBottomOf="@id/ivDeleteDetailed">
+
+                <TextView
+                    android:id="@+id/tvAvailability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disponível para leitura"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvBookRatingDetailed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4.5"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_star" />
+                </LinearLayout>
+            </LinearLayout>
 
             <!-- Buttons -->
             <Button
@@ -145,7 +152,7 @@
                 android:text="Detalhes do Livro"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                app:layout_constraintTop_toBottomOf="@id/tvAvailability" />
+                app:layout_constraintTop_toBottomOf="@id/layoutAvailabilityRating" />
 
             <Button
                 android:id="@+id/btnEvaluate"
